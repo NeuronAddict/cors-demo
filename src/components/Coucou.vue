@@ -18,24 +18,24 @@ const show = ref(props.show)
 </script>
 
 <template>
-  <div>
-    <p>Coucou <span>{{ name }}</span>!</p>
+  <v-sheet height="200">
+    <div>
+      <p>Coucou <span>{{ name }}</span>!</p>
 
-    <input id="coucou_name" v-if="show" :disabled="disabled" type="text" v-model.trim="name" >
-    <p v-else>(hidden content)</p>
-  </div>
+      <v-text-field id="coucou_name" v-if="show" :disabled="disabled" type="text" v-model.trim="name" ></v-text-field>
+      <p v-else>(hidden content)</p>
+    </div>
 
-  <div>
-    <p>
-      <input id="disabled" type="checkbox" value="disabled" v-model="disabled">
-      <label for="disabled">Disabled</label>
-    </p>
+    <div>
+      <p>
+        <v-checkbox id="disabled" input- label="Disabled"></v-checkbox>
+      </p>
 
-    <p>
-      <input id="show" type="checkbox" value="show" v-model="show">
-      <label for="show">Show</label>
-    </p>
-  </div>
+      <p>
+        <v-checkbox id="show" v-model="show" label="Show"></v-checkbox>
+      </p>
+    </div>
+  </v-sheet>
 </template>
 
 <style scoped>

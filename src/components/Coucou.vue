@@ -21,7 +21,7 @@ const show = ref(props.show)
   <div>
     <p>Coucou <span>{{ name }}</span>!</p>
 
-    <input v-if="show" :disabled="disabled" type="text" v-model.trim="name" >
+    <input id="coucou_name" v-if="show" :disabled="disabled" type="text" v-model.trim="name" >
     <p v-else>(hidden content)</p>
   </div>
 

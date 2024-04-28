@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       coucou ?
-      <Coucou />
+      <Coucou  name="Machin"/>
     </v-main>
   </v-app>
 </template>

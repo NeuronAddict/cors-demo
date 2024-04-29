@@ -1,26 +1,29 @@
-import { mount } from '@vue/test-utils'
+import {config, mount} from '@vue/test-utils'
 import { expect, test } from 'vitest'
-import Coucou from "../../src/components/Coucou.vue";
+import Coucou from "../../src/components/Coucou.vue"
+import vuetify from "../../src/plugins/vuetify";
+
+// https://vuetifyjs.com/en/getting-started/unit-testing/#setup-vitest
+global.ResizeObserver = require('resize-observer-polyfill')
+
+const wrapper = mount(Coucou,{
+    props: {
+        name: 'Truc'
+    },
+    global: {
+        components: {
+            Coucou,
+        },
+        plugins: [vuetify],
+    }
+})
 
 test('Display Coucou with name', () => {
-    const wrapper = mount(Coucou,{
-        props: {
-            name: 'Truc'
-        }
-    })
-
-    // Assert the rendered text of the component
     expect(wrapper.find('div p').text()).toEqual("Coucou Truc!")
 })
 
 
 test('Display Coucou with modified name', () => {
-    const wrapper = mount(Coucou,{
-        props: {
-            name: 'Truc'
-        }
-    })
-
     wrapper.find('input#coucou_name').setValue('Machin').then(() => {
         expect(wrapper.find('div p').text()).toEqual("Coucou Machin!")
     })

@@ -28,7 +28,7 @@ const show = ref(props.show)
 
     <div>
       <p>
-        <v-checkbox id="disabled" v-model="disabled" input- label="Disabled"></v-checkbox>
+        <v-checkbox id="disabled" v-model="disabled" label="Disabled"></v-checkbox>
       </p>
 
       <p>

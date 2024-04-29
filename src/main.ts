@@ -1,26 +1,21 @@
-import { createApp } from 'vue'
+/**
+ * main.ts
+ *
+ * Bootstraps Vuetify and other plugins then mounts the App`
+ */
+
+// Plugins
+import { registerPlugins } from './plugins'
+
+// Components
 import App from './App.vue'
 
-// Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-import {aliases, mdi} from "vuetify/iconsets/mdi";
-
-// https://github.com/vitest-dev/vitest/discussions/2677
-export const vuetify = createVuetify({
-    components,
-    directives,
-    icons: {
-        defaultSet: 'mdi',
-        aliases,
-        sets: {
-            mdi,
-        }
-    },
-})
+// Composables
+import { createApp } from 'vue'
 
 const app = createApp(App)
 
-app.use(vuetify).mount('#app')
+registerPlugins(app)
+
+app.mount('#app')
+

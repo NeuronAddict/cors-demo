@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+// https://vitejs.dev/config/
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
@@ -6,7 +8,6 @@ import ViteFonts from 'unplugin-fonts/vite'
 import vuetify from "vite-plugin-vuetify";
 import {transformAssetUrls} from "vite-plugin-vuetify";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     Vue({
@@ -45,5 +46,5 @@ export default defineConfig({
         inline: ['vuetify'],
       },
     },
-  }
+  },
 })

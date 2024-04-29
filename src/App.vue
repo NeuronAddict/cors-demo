@@ -11,7 +11,7 @@
       </v-navigation-drawer>
 
       <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-          <Coucou  name="Machin"/>
+        <MessageList />
       </v-main>
     </v-layout>
 
@@ -21,5 +21,5 @@
 
 <script setup lang="ts">
   //
-import Coucou from "@/components/Coucou.vue";
+  import MessageList from "@/components/MessageList.vue";
 </script>

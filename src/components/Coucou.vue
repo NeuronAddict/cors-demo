@@ -18,7 +18,7 @@ const show = ref(props.show)
 </script>
 
 <template>
-  <v-sheet height="200">
+  <v-sheet class="pa-4 ma-4">
     <div>
       <p>Coucou <span>{{ name }}</span>!</p>
 

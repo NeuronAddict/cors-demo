@@ -6,9 +6,6 @@
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "resolveJsonModule": true,
     "types": [
       "vite/client",
@@ -28,5 +25,5 @@
     "./src/typed-router.d.ts"
   ],
   "exclude": ["dist", "node_modules", "cypress"],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.app.json"}],
 }

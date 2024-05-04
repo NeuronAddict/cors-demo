@@ -21,20 +21,33 @@ onMounted(() => {
         loaded.value = true;
       })
   ;
-})
+});
 
 </script>
 
 <template>
-      <div :hidden="loaded"><v-progress-circular color="primary" size="50" width="7" indeterminate></v-progress-circular></div>
-      <v-list lines="three" select-strategy="classic">
-      <MessageBox v-for="message in messages" :author="message.author" :message="message.message">
-      </MessageBox>
-      </v-list>
-      <div class="text-red-darken-4" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
+  <div :hidden="loaded">
+    <v-progress-circular color="primary" size="50" width="7" indeterminate></v-progress-circular>
+  </div>
 
+  <v-virtual-scroll :items="messages" class="messages-list">
+    <template v-slot:default="{ item }">
+      <MessageBox :author="item.author" :message="item.message">
+      </MessageBox>
+    </template>
+  </v-virtual-scroll>
+
+  <div class="text-red-darken-4" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
 </template>
 
 <style scoped>
+
+.messages-list {
+  height: 80vh;
+}
+
+.message-add {
+  height: 20vh;
+}
 
 </style>

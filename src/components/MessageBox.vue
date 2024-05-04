@@ -10,34 +10,30 @@ const props = defineProps<{
 
 const messageDisabled = ref(false);
 
-const textStyleDisabled = {
+const textStyle = computed(() => messageDisabled.value ? {
   'color': colors.grey.darken3
-}
-
-const buttonText = computed(() => messageDisabled.value ? "UnRead" : "Read")
-const textStyle = computed(() => messageDisabled.value ? textStyleDisabled : {})
-
-const toggleRead = (event: Event): void => {
-  messageDisabled.value = !messageDisabled.value;
-}
+} : {})
 
 </script>
 
 <template>
 
-  <v-sheet class="pa-6 ma-6">
-    <h4 :style="textStyle">{{ author }}</h4>
-    <v-icon icon="mdiAccount" />
-    <p class="text-body-1 mb-4" :style="textStyle" :class="textStyle">{{ message }}</p>
-    <v-btn @click="toggleRead">{{ buttonText }}</v-btn>
-  </v-sheet>
+  <v-list-item>
+    <template v-slot:prepend>
+      <v-list-item-action start>
+        <v-checkbox-btn v-model="messageDisabled"></v-checkbox-btn>
+      </v-list-item-action>
+    </template>
+
+    <v-list-item-title :style="textStyle">{{ props.author}}</v-list-item-title>
+
+    <v-list-item-subtitle :style="textStyle">
+      {{ props.message }}
+    </v-list-item-subtitle>
+  </v-list-item>
 
 </template>
 
 <style scoped>
-
-p.disabled-text {
-  color: colors.
-}
 
 </style>

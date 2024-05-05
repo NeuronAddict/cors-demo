@@ -11,9 +11,9 @@
         </v-navigation-drawer>
 
         <v-main>
-          <v-container class="fill-height">
+          <v-container>
 
-            <v-row class="fill-height" justify="center" no-gutters>
+            <v-row justify="center" no-gutters>
 
               <v-col md="8" >
                 <v-sheet>
@@ -21,9 +21,11 @@
                 </v-sheet>
               </v-col>
             </v-row>
-          </v-container>
 
+          </v-container>
+          <Footer></Footer>
         </v-main>
+
       </v-layout>
 
     </v-app>
@@ -33,4 +35,5 @@
 <script setup lang="ts">
 //
 import MessageList from "@/components/MessageList.vue";
+import Footer from "@/components/footer.vue";
 </script>

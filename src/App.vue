@@ -35,5 +35,6 @@
 <script setup lang="ts">
 //
 import MessageList from "@/components/MessageList.vue";
-import Footer from "@/components/footer.vue";
+import Footer from "@/components/layout/footer.vue";
+import AppBar from "@/components/layout/AppBar.vue";
 </script>

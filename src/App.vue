@@ -2,7 +2,8 @@
   <v-theme-provider theme="custom">
     <v-app>
       <v-layout class="rounded rounded-md">
-        <v-app-bar title="Application bar"></v-app-bar>
+
+       <AppBar></AppBar>
 
         <v-navigation-drawer>
           <v-list>

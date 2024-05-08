@@ -39,3 +39,10 @@ import MessageList from "@/components/MessageList.vue";
 import Footer from "@/components/layout/footer.vue";
 import AppBar from "@/components/layout/AppBar.vue";
 </script>
+
+<style>
+a {
+  color: #0d47a1;
+  font-weight: bold;
+}
+</style>

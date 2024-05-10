@@ -67,8 +67,8 @@ function deleteItem(n: number) {
       <v-progress-circular color="primary" size="50" width="7" indeterminate></v-progress-circular>
     </div>
 
-  <v-sheet elevation="7" class="ma-3">
-    <v-row justify="space-around" align="center" class="ma-2">
+  <v-sheet elevation="7" class="ma-2 pa-1">
+    <v-row justify="space-around" align="center" class="ma-1 pa-1">
       <v-col md="10">
       <v-textarea
           rows="2"

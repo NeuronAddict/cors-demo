@@ -12,12 +12,12 @@
         </v-navigation-drawer>
 
         <v-main>
-          <v-container>
+          <v-container class="pa-0">
 
             <v-row justify="center" no-gutters>
 
               <v-col md="8" >
-                <v-sheet>
+                <v-sheet class="ma-0 pa-4">
                   <MessageList></MessageList>
                 </v-sheet>
               </v-col>

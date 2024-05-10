@@ -26,7 +26,7 @@ const textStyle = computed(() => messageDisabled.value ? {
       </v-list-item-action>
     </template>
     <template v-slot:append>
-      <v-btn variant="text" icon="mdi-delete" @click="$emit('deleteItem', props.index)"></v-btn>
+      <v-btn variant="plain" class="on-surface" icon="mdi-close" @click="$emit('deleteItem', props.index)"></v-btn>
     </template>
 
     <v-list-item-title class="mb-2" :style="textStyle">{{ props.author}}</v-list-item-title>

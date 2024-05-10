@@ -23,8 +23,9 @@ export default createVuetify({
       custom: {
         dark: true,
         colors: {
-          primary: colors.purple.darken4, // #E53935
-          secondary: colors.purple.darken1, // #FFCDD2
+          primary: colors.deepPurple.lighten2,
+          secondary: colors.teal.lighten2,
+          error: colors.red.accent4
         }
       },
     },

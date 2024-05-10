@@ -42,7 +42,6 @@ import AppBar from "@/components/layout/AppBar.vue";
 
 <style>
 a {
-  color: #0d47a1;
   font-weight: bold;
 }
 </style>

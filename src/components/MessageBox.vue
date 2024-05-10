@@ -21,7 +21,7 @@ const textStyle = computed(() => messageDisabled.value ? {
   <v-list-item class="ma-2 pa-3">
     <template v-slot:prepend>
       <v-list-item-action start>
-        <v-checkbox-btn true-icon="mdi-check" lab v-model="messageDisabled"></v-checkbox-btn>
+        <v-checkbox-btn true-icon="mdi-check" base-color="secondary" color="secondary" lab v-model="messageDisabled"></v-checkbox-btn>
       </v-list-item-action>
     </template>
 

@@ -23,7 +23,7 @@ onMounted(() => {
   ;
 });
 
-let reverseMessages = computed(() => [...messages.value].reverse());
+let reverseMessages = computed(() => [...messages.value].reverse().map((item, index) => {return {...item, index: index}}));
 
 const messageInput = ref("");
 const error = ref({
@@ -53,6 +53,10 @@ function textAreaChange(event: InputEvent) {
       message: ""
     }
   }
+}
+
+function deleteItem(n: number) {
+  messages.value = messages.value.filter((value, index) => index != n);
 }
 
 </script>
@@ -91,7 +95,7 @@ function textAreaChange(event: InputEvent) {
 
     <v-virtual-scroll :items="reverseMessages">
       <template v-slot:default="{ item }">
-        <MessageBox :author="item.author" :message="item.message">
+        <MessageBox @delete="deleteItem" :author="item.author" :message="item.message" :index="item.index">
         </MessageBox>
       </template>
     </v-virtual-scroll>

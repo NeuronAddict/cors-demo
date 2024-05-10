@@ -26,23 +26,62 @@ onMounted(() => {
 let reverseMessages = computed(() => [...messages.value].reverse());
 
 const messageInput = ref("");
+const error = ref({
+  hasError: false,
+  message: ""
+});
 
-function sendMessage(event: Event) {
-  messages.value.push({author: "Anonyme", message: messageInput.value});
-  messageInput.value = "";
+function sendMessage(_: Event) {
+
+  if(messageInput.value.length == 0) {
+    error.value = {
+      hasError: true,
+      message: 'Please enter a value'
+    }
+  }
+  else {
+    messages.value.push({author: "Anonyme", message: messageInput.value});
+    messageInput.value = "";
+  }
+
+}
+
+function textAreaChange(event: InputEvent) {
+  if((event.target as HTMLTextAreaElement).value.length > 0) {
+    error.value = {
+      hasError: false,
+      message: ""
+    }
+  }
 }
 
 </script>
 
 <template>
+
     <div :hidden="loaded">
       <v-progress-circular color="primary" size="50" width="7" indeterminate></v-progress-circular>
     </div>
 
-  <v-sheet class="ma-3">
+  <v-sheet elevation="7" class="ma-3">
     <v-row justify="space-around" align="center" class="ma-2">
       <v-col md="10">
-      <v-textarea rows="2" prepend-icon="mdi-task" hint="Type a task to do" auto-grow v-model="messageInput" class="ma-2" ></v-textarea>
+      <v-textarea
+          rows="2"
+          base-color="secondary"
+          color="secondary"
+          prepend-icon="mdi-task"
+          hint="Enter a task to do"
+          auto-grow
+          v-model="messageInput"
+          class="ma-2"
+          ref="inputMessageTextArea"
+          :error="error.hasError"
+          :error-messages="error.message"
+          @input="textAreaChange"
+
+      >
+      </v-textarea>
       </v-col>
       <v-col md="2">
         <v-btn @click="sendMessage" class="ma-2"><v-icon icon="mdi-plus-circle-outline"></v-icon></v-btn>
@@ -50,21 +89,16 @@ function sendMessage(event: Event) {
     </v-row>
   </v-sheet>
 
-    <v-virtual-scroll :items="reverseMessages" class="messages-list">
+    <v-virtual-scroll :items="reverseMessages">
       <template v-slot:default="{ item }">
         <MessageBox :author="item.author" :message="item.message">
         </MessageBox>
       </template>
     </v-virtual-scroll>
 
-
-
-    <div class="text-red-darken-4" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
+    <div class="text-error" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
 </template>
 
 <style scoped>
-
-.messages-list {
-}
 
 </style>

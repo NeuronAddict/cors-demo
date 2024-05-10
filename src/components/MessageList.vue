@@ -40,8 +40,18 @@ function sendMessage(_: Event) {
     }
   }
   else {
-    messages.value.push({author: "Anonyme", message: messageInput.value});
-    messageInput.value = "";
+    fetch('/api/v1/messages', {
+          method: 'post',
+          body: JSON.stringify({author: 'Anonymous', message: messageInput.value}),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(value => value.json())
+        .then(json => {
+      messages.value.push(json as Message);
+      messageInput.value = "";
+    });
   }
 
 }
@@ -56,7 +66,7 @@ function textAreaChange(event: InputEvent) {
 }
 
 function deleteItem(n: number) {
-  messages.value = messages.value.filter((value, index) => index != n);
+  fetch(`/api/v1/messages/${n}`).then(_ => messages.value = messages.value.reverse().filter((_, index) => index !== n).reverse());
 }
 
 </script>
@@ -95,7 +105,7 @@ function deleteItem(n: number) {
 
     <v-virtual-scroll :items="reverseMessages">
       <template v-slot:default="{ item }">
-        <MessageBox @delete="deleteItem" :author="item.author" :message="item.message" :index="item.index">
+        <MessageBox @deleteItem="deleteItem" :author="item.author" :message="item.message" :index="item.index">
         </MessageBox>
       </template>
     </v-virtual-scroll>

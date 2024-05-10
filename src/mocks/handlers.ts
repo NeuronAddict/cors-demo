@@ -9,8 +9,24 @@ const messages: Message[] = [
     { author: "Truc", message: "Quisque et convallis enim, eu laoreet augue. Nullam dui sapien, faucibus et ultrices ut, porttitor id ligula. Nullam et vestibulum sapien. Nam commodo, ex vel pulvinar finibus, purus metus tristique lacus, non volutpat magna nulla quis quam. In vestibulum hendrerit odio, sit amet."},
 ]
 
+let current = messages;
+
 export const restHandlers = [
     http.get('/api/v1/messages', () => {
-        return HttpResponse.json(messages)
+        console.log('get, return', current);
+        return HttpResponse.json(current);
     }),
+    http.post('/api/v1/messages',
+            async info => {
+        const content = await info.request.clone().json() as Message;
+        current.push(content);
+        console.log('post, return', content)
+        return HttpResponse.json(content);
+    }),
+    http.delete('/api/v1/messages/:id', info => {
+        const id = parseInt(info.params.id as string);
+        current = current.filter((value, index) => index !== id);
+        console.log('delete for id', id, 'return 204');
+        return HttpResponse.text('', {status: 204});
+    })
 ]

@@ -122,7 +122,7 @@ function deleteItem(n: number) {
 
   <v-virtual-scroll :items="reverseMessages">
     <template v-slot:default="{ item }">
-      <MessageBox @deleteItem="deleteItem" :author="item.author" :message="item.message" :index="item.index">
+      <MessageBox @deleteItem="deleteItem" :message="item" :index="item.index">
       </MessageBox>
     </template>
   </v-virtual-scroll>

@@ -17,7 +17,7 @@
             <v-row justify="center" no-gutters>
 
               <v-col md="8" >
-                <v-sheet class="ma-0 pa-4">
+                <v-sheet class="ma-4 pa-4">
                   <MessageList></MessageList>
                 </v-sheet>
               </v-col>

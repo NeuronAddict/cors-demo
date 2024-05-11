@@ -22,7 +22,7 @@ const textStyle = computed(() => messageDisabled.value ? {
   <v-list-item class="ma-2 pa-4">
     <template v-slot:append>
       <v-list-item-action start>
-        <v-checkbox-btn true-icon="mdi-check" base-color="secondary" color="secondary" lab v-model="messageDisabled"></v-checkbox-btn>
+        <v-checkbox-btn data-testid="message-box-item-cb" true-icon="mdi-check" base-color="secondary" color="secondary" lab v-model="messageDisabled"></v-checkbox-btn>
       </v-list-item-action>
     </template>
     <template v-slot:prepend>
@@ -31,8 +31,8 @@ const textStyle = computed(() => messageDisabled.value ? {
 
     <v-list-item-title data-testid="message-box-item-author" class="mb-2" :style="textStyle">{{ props.message.author}} - {{ props.message.dueDate }}</v-list-item-title>
 
-    <v-list-item-subtitle :style="textStyle">
-      {{ props.message }}
+    <v-list-item-subtitle data-testid="message-box-item-message" :style="textStyle">
+      {{ props.message.message }}
     </v-list-item-subtitle>
   </v-list-item>
 

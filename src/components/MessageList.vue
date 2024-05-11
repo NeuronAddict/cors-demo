@@ -95,6 +95,7 @@ function deleteItem(n: number) {
             color="secondary"
             prepend-icon="mdi-task"
             hint="Enter a task to do"
+            label="Task description"
             auto-grow
             v-model="messageInput"
             class="ma-2"

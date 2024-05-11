@@ -7,7 +7,15 @@ import {computed, onMounted, ref} from "vue";
 const messages = ref([] as Array<Message>)
 
 let loaded = ref(false);
-let errorReason = ref("")
+let errorReason = ref("");
+let dateInput = ref('');
+
+let isValidDate = computed(() => {
+  const dateReg = /^(0[1-9]|[12][0-9]|3[01])[\\/](0[1-9]|1[012])[\\/](19|20)\d\d$/;
+  return dateReg.test(dateInput.value);
+});
+
+let dateInputError = computed(() => !isValidDate.value && dateInput.value ? 'Please enter a date in format dd/mm/yyyy' : '');
 
 onMounted(() => {
   fetch('/api/v1/messages')
@@ -99,6 +107,11 @@ function deleteItem(n: number) {
         >
         </v-textarea>
       </v-col>
+
+      <v-col sd="8" md="3">
+        <v-text-field type="date" v-model="dateInput" :error-messages="dateInputError" label="Due date"></v-text-field>
+      </v-col>
+
       <v-col md="2">
         <v-btn data-testid="message-list-button-add" @click="sendMessage" class="ma-2">
           <v-icon icon="mdi-plus-circle-outline"></v-icon>

@@ -2,10 +2,10 @@
 
 import {computed, ref} from "vue";
 import colors from "vuetify/util/colors";
+import type {Message} from "@/core/message";
 
 const props = defineProps<{
-  author: string;
-  message: string;
+  message: Message;
   index: number;
 }>();
 
@@ -29,7 +29,7 @@ const textStyle = computed(() => messageDisabled.value ? {
       <v-btn variant="plain" class="on-surface" icon="mdi-close" @click="$emit('deleteItem', props.index)"></v-btn>
     </template>
 
-    <v-list-item-title class="mb-2" :style="textStyle">{{ props.author}}</v-list-item-title>
+    <v-list-item-title data-testid="message-box-item-author" class="mb-2" :style="textStyle">{{ props.message.author}} - {{ props.message.dueDate }}</v-list-item-title>
 
     <v-list-item-subtitle :style="textStyle">
       {{ props.message }}

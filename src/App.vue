@@ -21,6 +21,11 @@
                   <MessageList></MessageList>
                 </v-sheet>
               </v-col>
+              <v-col md="4">
+                <v-sheet class="ma-4 pa-4">
+                  <History></History>
+                </v-sheet>
+              </v-col>
             </v-row>
 
           </v-container>
@@ -38,6 +43,7 @@
 import MessageList from "@/components/MessageList.vue";
 import Footer from "@/components/layout/footer.vue";
 import AppBar from "@/components/layout/AppBar.vue";
+import History from "@/components/History.vue";
 </script>
 
 <style>

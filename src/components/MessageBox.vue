@@ -20,12 +20,12 @@ const textStyle = computed(() => messageDisabled.value ? {
 <template>
 
   <v-list-item class="ma-2 pa-4">
-    <template v-slot:prepend>
+    <template v-slot:append>
       <v-list-item-action start>
         <v-checkbox-btn true-icon="mdi-check" base-color="secondary" color="secondary" lab v-model="messageDisabled"></v-checkbox-btn>
       </v-list-item-action>
     </template>
-    <template v-slot:append>
+    <template v-slot:prepend>
       <v-btn variant="plain" class="on-surface" icon="mdi-close" @click="$emit('deleteItem', props.index)"></v-btn>
     </template>
 

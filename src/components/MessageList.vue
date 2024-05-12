@@ -5,6 +5,7 @@ import type {Message} from "@/core/message";
 import {computed, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";
 import AddMessageForm from "@/components/messages/AddMessageForm.vue";
+import messagesService from "@/services/messages"
 
 const messages = ref([] as Array<Message>)
 
@@ -12,27 +13,23 @@ let loaded = ref(false);
 
 
 onMounted(() => {
-  fetch('/api/v1/messages')
-      .then(value => value.json())
-      .then(value => messages.value = (value as Message[]))
+
+  messagesService.get()
+      .then(response => messages.value = (response.data as Message[]))
       .catch(reason => {
         console.log(reason);
         errorReason.value = reason;
       })
       .finally(() => {
         loaded.value = true;
-      })
-  ;
+      });
 });
 
 let { hashValue } = trackHash('author');
 
-let reverseMessages = computed(() => [...messages.value].reverse().filter(
+let reverseMessages = computed(() => messages.value.reverse().filter(
         value => hashValue.value !== null ? value.author === hashValue.value : true
-    ).map((item, index) => {
-  return { message: item, index: index}
-}));
-
+    ));
 
 let errorReason = ref("");
 
@@ -43,8 +40,8 @@ function onAddMessage(message: Message) {
 }
 
 
-function deleteItem(n: number) {
-  fetch(`/api/v1/messages/${n}`, {method: 'delete'}).then(_ => messages.value = messages.value.reverse().filter((_, index) => index !== n).reverse());
+function onDeleteItem(message: Message) {
+  messages.value = messages.value.reverse().filter((_, index) => index !== message.id).reverse();
 }
 
 </script>
@@ -61,7 +58,7 @@ function deleteItem(n: number) {
 
   <AddMessageForm author="anonymous" @addMessage="onAddMessage" />
 
-  <MessageBox v-for="item in reverseMessages" @deleteItem="deleteItem" :message="item.message" :index="item.index"/>
+  <MessageBox v-for="message in reverseMessages" @deleteItem="onDeleteItem" :message="message"/>
 
   <div class="text-error" data-testid="message-list-error" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
 </template>

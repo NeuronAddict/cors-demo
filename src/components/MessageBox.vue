@@ -2,12 +2,19 @@
 
 import {ref} from "vue";
 import type {Message} from "@/core/message";
+import messagesService from "@/services/messages";
 
 const props = defineProps<{
   message: Message;
-  index: number;
 }>();
 
+const emit = defineEmits<{
+  (e: 'deleteMessage', message: Message): Promise<Response>
+}>()
+
+function deleteItem() {
+  messagesService.delete(props.message).then(_ => emit('deleteMessage', props.message));
+}
 const messageDisabled = ref(false);
 
 </script>
@@ -32,7 +39,7 @@ const messageDisabled = ref(false);
           <v-list>
             <v-list-item>
               <v-list-item-title>
-                <v-btn variant="text" class="on-surface" icon="mdi-delete" @click="$emit('deleteItem', props.index)"></v-btn>
+                <v-btn variant="text" class="on-surface" icon="mdi-delete" @click="deleteItem"></v-btn>
               </v-list-item-title>
             </v-list-item>
           </v-list>

@@ -11,6 +11,7 @@ interface LogEntry {
 const logs: LogEntry[] = [
   {
     message: {
+      id: 1,
       author: 'Truc',
       message: 'SDCsqdqsd',
       dueDate: '2024-12-12'
@@ -20,34 +21,45 @@ const logs: LogEntry[] = [
   },
   {
     message: {
+      id: 2,
       author: 'Machin',
       message: 'SDCsqdqsd',
       dueDate: '2024-01-12'
     },
     initiator: 'Truc',
     type: "add"
-  }
+  },
+  {
+    message: {
+      id: 3,
+      author: 'Truc',
+      message: 'SDCsqdqsd',
+      dueDate: '2024-12-12'
+    },
+    initiator: 'Truc',
+    type: "delete"
+  },
+  {
+    message: {
+      id: 4,
+      author: 'Truc',
+      message: 'SDCsqdqsd',
+      dueDate: '2024-12-12'
+    },
+    initiator: 'Truc',
+    type: "delete"
+  },
 ];
 
 </script>
 
 <template>
-
-  <v-sheet class="ma-2 pa-1">
-    <v-row>
-      <v-col cols="12">
-        <p class="text-h5">Actions log</p>
-        <hr/>
-      </v-col>
-    </v-row>
-    <v-row v-for="item in logs">
-      <v-col cols="4">
-        <p class="text-capitalize">{{ item.type }} :</p>
-      </v-col>
-      <v-col cols="8">
-        <p>{{ item.initiator }} has {{ item.type }} message "{{ item.message.message.substring(0, 15) }}..."</p>
-      </v-col>
-    </v-row>
+  <v-sheet>
+    <div class="ma-2 pa-3 text-h5">Actions log</div>
+      <v-list-item class="ma-2" v-for="logEntry in logs">
+        <v-list-item-title>{{ logEntry.type }} - {{ logEntry.initiator }}</v-list-item-title>
+        <v-list-item-subtitle>{{ logEntry.initiator }} has {{ logEntry.type }} message "{{ logEntry.message.message.substring(0, 15) }}..."</v-list-item-subtitle>
+      </v-list-item>
   </v-sheet>
 </template>
 

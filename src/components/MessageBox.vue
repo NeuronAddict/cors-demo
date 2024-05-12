@@ -11,27 +11,43 @@ const props = defineProps<{
 
 const messageDisabled = ref(false);
 
-const textStyle = computed(() => messageDisabled.value ? {
-  'color': colors.grey.darken3
-} : {})
-
 </script>
 
 <template>
 
-  <v-list-item class="ma-2 pa-4">
+  <v-list-item class="ma-2 pa-4" :class="{ greyed: messageDisabled }">
     <template v-slot:append>
       <v-list-item-action start>
-        <v-checkbox-btn data-testid="message-box-item-cb" true-icon="mdi-check" base-color="secondary" color="secondary" lab v-model="messageDisabled"></v-checkbox-btn>
+        <v-checkbox-btn data-testid="message-box-item-cb"
+                        true-icon="mdi-check"
+                        base-color="secondary"
+                        color="secondary"
+                        v-model="messageDisabled"
+                        label="done"
+        ></v-checkbox-btn>
+
+
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn class="ma-3" color="surface" icon="mdi-dots-vertical" v-bind="props"></v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>
+                <v-btn variant="text" class="on-surface" icon="mdi-delete" @click="$emit('deleteItem', props.index)"></v-btn>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
       </v-list-item-action>
     </template>
     <template v-slot:prepend>
-      <v-btn variant="plain" class="on-surface" icon="mdi-close" @click="$emit('deleteItem', props.index)"></v-btn>
     </template>
 
-    <v-list-item-title data-testid="message-box-item-author" class="mb-2" :style="textStyle">{{ props.message.author}} - {{ props.message.dueDate }}</v-list-item-title>
+    <v-list-item-title data-testid="message-box-item-author" class="mb-2">{{ props.message.author}} - {{ props.message.dueDate }}</v-list-item-title>
 
-    <v-list-item-subtitle data-testid="message-box-item-message" :style="textStyle">
+    <v-list-item-subtitle data-testid="message-box-item-message">
       {{ props.message.message }}
     </v-list-item-subtitle>
   </v-list-item>
@@ -39,5 +55,7 @@ const textStyle = computed(() => messageDisabled.value ? {
 </template>
 
 <style scoped>
-
+.greyed {
+  opacity: 0.4;
+}
 </style>

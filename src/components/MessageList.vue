@@ -7,15 +7,8 @@ import {computed, onMounted, ref} from "vue";
 const messages = ref([] as Array<Message>)
 
 let loaded = ref(false);
-let errorReason = ref("");
-let dateInput = ref('');
-
-let isValidDate = computed(() => {
-  const dateReg = /^(0[1-9]|[12][0-9]|3[01])[\\/](0[1-9]|1[012])[\\/](19|20)\d\d$/;
-  return dateReg.test(dateInput.value);
-});
-
-let dateInputError = computed(() => !isValidDate.value && dateInput.value ? 'Please enter a date in format dd/mm/yyyy' : '');
+const dateInput = ref('');
+const messageInput = ref("");
 
 onMounted(() => {
   fetch('/api/v1/messages')
@@ -32,14 +25,14 @@ onMounted(() => {
 });
 
 let reverseMessages = computed(() => [...messages.value].reverse().map((item, index) => {
-  return {...item, index: index}
+  return { message: item, index: index}
 }));
 
-const messageInput = ref("");
 const error = ref({
   hasError: false,
   message: ""
 });
+let errorReason = ref("");
 
 function sendMessage(_: Event) {
 
@@ -51,7 +44,7 @@ function sendMessage(_: Event) {
   } else {
     fetch('/api/v1/messages', {
       method: 'post',
-      body: JSON.stringify({author: 'Anonymous', message: messageInput.value}),
+      body: JSON.stringify({author: 'Anonymous', message: messageInput.value, dueDate: dateInput.value} as Message),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -114,7 +107,7 @@ function deleteItem(n: number) {
       </v-col>
 
       <v-col sd="8" md="3">
-        <v-text-field type="date" v-model="dateInput" :error-messages="dateInputError" label="Due date"></v-text-field>
+        <v-text-field type="date" v-model="dateInput" label="Due date"></v-text-field>
       </v-col>
 
       <v-col md="2">
@@ -127,7 +120,7 @@ function deleteItem(n: number) {
 
   <v-virtual-scroll :items="reverseMessages">
     <template v-slot:default="{ item }">
-      <MessageBox @deleteItem="deleteItem" :message="item" :index="item.index">
+      <MessageBox @deleteItem="deleteItem" :message="item.message" :index="item.index">
       </MessageBox>
     </template>
   </v-virtual-scroll>

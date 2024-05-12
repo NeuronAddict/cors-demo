@@ -17,14 +17,10 @@
             <v-row justify="center" no-gutters>
 
               <v-col md="8" >
-                <v-sheet class="ma-4 pa-4">
                   <MessageList></MessageList>
-                </v-sheet>
               </v-col>
               <v-col md="4">
-                <v-sheet class="ma-4 pa-4">
                   <History></History>
-                </v-sheet>
               </v-col>
             </v-row>
 

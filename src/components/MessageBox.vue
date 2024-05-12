@@ -13,8 +13,7 @@ const messageDisabled = ref(false);
 </script>
 
 <template>
-
-  <v-list-item class="ma-2 pa-4" :class="{ greyed: messageDisabled }">
+  <v-list-item elevation="7" class="bg-surface surface ma-2 pa-4" :class="{ greyed: messageDisabled }">
     <template v-slot:append>
       <v-list-item-action start>
         <v-checkbox-btn data-testid="message-box-item-cb"
@@ -43,14 +42,14 @@ const messageDisabled = ref(false);
     </template>
     <template v-slot:prepend>
     </template>
-
-    <v-list-item-title data-testid="message-box-item-author" class="mb-2">{{ props.message.author}} - {{ props.message.dueDate }}</v-list-item-title>
+    <v-list-item-title data-testid="message-box-item-author" class="mb-2">{{ props.message.author }} -
+      {{ props.message.dueDate }}
+    </v-list-item-title>
 
     <v-list-item-subtitle data-testid="message-box-item-message">
       {{ props.message.message }}
     </v-list-item-subtitle>
   </v-list-item>
-
 </template>
 
 <style scoped>

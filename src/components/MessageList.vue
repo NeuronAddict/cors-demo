@@ -3,6 +3,7 @@
 import MessageBox from "@/components/MessageBox.vue";
 import type {Message} from "@/core/message";
 import {computed, onMounted, ref} from "vue";
+import {trackHash} from "@/core/hash-compute";
 
 const messages = ref([] as Array<Message>)
 
@@ -24,7 +25,13 @@ onMounted(() => {
   ;
 });
 
-let reverseMessages = computed(() => [...messages.value].reverse().map((item, index) => {
+let { hashValue } = trackHash('author');
+
+
+
+let reverseMessages = computed(() => [...messages.value].reverse().filter(
+    value => hashValue.value !== null ? value.author === hashValue.value : true
+).map((item, index) => {
   return { message: item, index: index}
 }));
 

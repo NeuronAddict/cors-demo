@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import MessageBox from "@/components/MessageBox.vue";
+import MessageBox from "@/components/messages/MessageBox.vue";
 import type {Message} from "@/core/message";
 import {computed, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";

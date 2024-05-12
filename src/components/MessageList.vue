@@ -68,7 +68,7 @@ function textAreaChange(event: InputEvent) {
 }
 
 function deleteItem(n: number) {
-  fetch(`/api/v1/messages/${n}`).then(_ => messages.value = messages.value.reverse().filter((_, index) => index !== n).reverse());
+  fetch(`/api/v1/messages/${n}`, {method: 'delete'}).then(_ => messages.value = messages.value.reverse().filter((_, index) => index !== n).reverse());
 }
 
 </script>

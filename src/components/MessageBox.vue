@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
-import {computed, ref} from "vue";
-import colors from "vuetify/util/colors";
+import {ref} from "vue";
 import type {Message} from "@/core/message";
 
 const props = defineProps<{

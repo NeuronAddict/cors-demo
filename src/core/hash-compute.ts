@@ -14,8 +14,10 @@ export function trackHash(name: string) {
             : new URLSearchParams(
                 window.location.hash.substring(1)
             ).get(name);
-        console.log(hashValue);
+        console.log(`hash changed, extract value for ${name}`, hashValue.value);
     }
+
+    onHashChange();
 
     return { hashValue };
 }

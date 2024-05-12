@@ -30,8 +30,8 @@ let { hashValue } = trackHash('author');
 
 
 let reverseMessages = computed(() => [...messages.value].reverse().filter(
-    value => hashValue.value !== null ? value.author === hashValue.value : true
-).map((item, index) => {
+        value => hashValue.value !== null ? value.author === hashValue.value : true
+    ).map((item, index) => {
   return { message: item, index: index}
 }));
 

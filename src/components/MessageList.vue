@@ -60,8 +60,9 @@ function deleteItem(n: number) {
   </v-card>
 
   <AddMessageForm author="anonymous" @addMessage="onAddMessage" />
-  <MessageBox v-for="item in reverseMessages" @deleteItem="deleteItem" :message="item.message" :index="item.index">
-      </MessageBox>
+
+  <MessageBox v-for="item in reverseMessages" @deleteItem="deleteItem" :message="item.message" :index="item.index"/>
+
   <div class="text-error" data-testid="message-list-error" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
 </template>
 

@@ -100,9 +100,9 @@ async function addMessage(event: Event) {
           </v-btn>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row justify="end">
         <v-col cols="12">
-          <div class="text-h3 text-error">{{ errorReason }}</div>
+          <div class="text-end pa-2 text-body-1 text-error">{{ errorReason }}</div>
         </v-col>
       </v-row>
     </v-sheet>

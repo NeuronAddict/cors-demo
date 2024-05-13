@@ -6,6 +6,7 @@ import {computed, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";
 import AddMessageForm from "@/components/messages/AddMessageForm.vue";
 import {messageService} from "@/services/service";
+import MessageSearch from "@/components/messages/MessageSearch.vue";
 
 const messages = ref([] as Array<Message>)
 
@@ -51,6 +52,8 @@ function onDeleteItem(message: Message) {
   <div :hidden="loaded">
     <v-progress-circular color="primary" size="50" width="7" indeterminate></v-progress-circular>
   </div>
+
+  <MessageSearch/>
 
   <v-card class="ma-2">
     <v-card-title>Tasks TODO</v-card-title>

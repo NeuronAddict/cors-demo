@@ -1,55 +1,15 @@
 <script setup lang="ts">
 
-import type {Message} from "@/core/message";
 
-interface LogEntry {
-  type: "delete" | "add" | "done" | "undone",
-  message: Message,
-  initiator: string
-}
+import {logService} from "@/services/service";
+import {onMounted, ref} from "vue";
+import type LogEntry from "@/core/log-entry";
 
-const logs: LogEntry[] = [
-  {
-    message: {
-      id: 1,
-      author: 'Truc',
-      message: 'SDCsqdqsd',
-      dueDate: '2024-12-12'
-    },
-    initiator: 'Truc',
-    type: "delete"
-  },
-  {
-    message: {
-      id: 2,
-      author: 'Machin',
-      message: 'SDCsqdqsd',
-      dueDate: '2024-01-12'
-    },
-    initiator: 'Truc',
-    type: "add"
-  },
-  {
-    message: {
-      id: 3,
-      author: 'Truc',
-      message: 'SDCsqdqsd',
-      dueDate: '2024-12-12'
-    },
-    initiator: 'Truc',
-    type: "delete"
-  },
-  {
-    message: {
-      id: 4,
-      author: 'Truc',
-      message: 'SDCsqdqsd',
-      dueDate: '2024-12-12'
-    },
-    initiator: 'Truc',
-    type: "delete"
-  },
-];
+const logs = ref<LogEntry[]>();
+
+onMounted(() => {
+  logService.get().then(value => logs.value = value.data)
+});
 
 </script>
 

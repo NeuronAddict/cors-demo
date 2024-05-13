@@ -5,7 +5,7 @@ import type {Message} from "@/core/message";
 import {computed, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";
 import AddMessageForm from "@/components/messages/AddMessageForm.vue";
-import messagesService from "@/services/messages"
+import {messageService} from "@/services/service";
 
 const messages = ref([] as Array<Message>)
 
@@ -14,7 +14,7 @@ let loaded = ref(false);
 
 onMounted(() => {
 
-  messagesService.get()
+  messageService.get()
       .then(response => messages.value = (response.data as Message[]))
       .catch(reason => {
         console.log(reason);

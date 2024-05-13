@@ -2,7 +2,7 @@
 
 import {ref} from "vue";
 import type {Message} from "@/core/message";
-import messagesService from "@/services/messages";
+import {messageService} from "@/services/service";
 
 const props = defineProps<{
   message: Message;
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 }>()
 
 function deleteItem() {
-  messagesService.delete(props.message).then(_ => emit('deleteMessage', props.message));
+  messageService.delete(props.message).then(_ => emit('deleteMessage', props.message));
 }
 const messageDisabled = ref(false);
 

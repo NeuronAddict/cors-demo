@@ -15,7 +15,7 @@ let loaded = ref(false);
 onMounted(() => {
 
   messageService.get()
-      .then(response => messages.value = (response.data as Message[]))
+      .then(response => messages.value = response.data)
       .catch(reason => {
         console.log(reason);
         errorReason.value = reason;

@@ -1,14 +1,12 @@
 <script setup lang="ts">
 
 import MessageBox from "@/components/messages/MessageBox.vue";
-import type {Message} from "@/core/message";
 import {computed, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";
 import AddMessageForm from "@/components/messages/AddMessageForm.vue";
 import {messageService} from "@/services/service";
 import MessageSearch from "@/components/messages/MessageSearch.vue";
-
-const messages = ref([] as Array<Message>)
+import {messageStore} from "@/core/messages-store";
 
 let loaded = ref(false);
 
@@ -16,7 +14,7 @@ let loaded = ref(false);
 onMounted(() => {
 
   messageService.get()
-      .then(response => messages.value = response.data)
+      .then(response => messageStore.messages = response.data)
       .catch(reason => {
         console.log(reason);
         errorReason.value = reason;
@@ -28,22 +26,11 @@ onMounted(() => {
 
 let { hashValue } = trackHash('author');
 
-let reverseMessages = computed(() => messages.value.reverse().filter(
-        value => hashValue.value !== null ? value.author === hashValue.value : true
-    ));
+let reverseMessages = computed(() => messageStore.messages.reverse().filter(
+    value => hashValue.value !== null ? value.author === hashValue.value : true
+));
 
 let errorReason = ref("");
-
-
-function onAddMessage(message: Message) {
-  console.log('message added', message);
-  messages.value.push(message);
-}
-
-
-function onDeleteItem(message: Message) {
-  messages.value = messages.value.reverse().filter((_, index) => index !== message.id).reverse();
-}
 
 </script>
 
@@ -59,9 +46,9 @@ function onDeleteItem(message: Message) {
     <v-card-title>Tasks TODO</v-card-title>
   </v-card>
 
-  <AddMessageForm author="anonymous" @addMessage="onAddMessage" />
+  <AddMessageForm author="anonymous"/>
 
-  <MessageBox v-for="message in reverseMessages" @deleteItem="onDeleteItem" :message="message"/>
+  <MessageBox v-for="message in reverseMessages" :message="message"/>
 
   <div class="text-error" data-testid="message-list-error" :hidden="errorReason.length == 0">Error :/ {{ errorReason }}</div>
 </template>

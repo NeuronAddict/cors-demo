@@ -6,6 +6,7 @@ import {logService, messageService} from "@/services/service";
 import type LogEntry from "@/core/log-entry";
 import type {CreateDTO} from "@/core/dto-types";
 import {logStore} from "@/core/logs-store";
+import {messageStore} from "@/core/messages-store";
 
 const props = defineProps<{
   message: Message;
@@ -17,14 +18,14 @@ const emit = defineEmits<{
 
 function deleteItem() {
   messageService.delete(props.message)
-      .then(_ => emit('deleteMessage', props.message))
-      .then(_ => emit('deleteMessage', props.message))
-      .then(_default => logService.post({
+      .then(_ => messageStore.delete(props.message))
+      .then(_ => logService.post({
         initiator: 'anonymous',
         type: "delete",
         message: props.message
       }))
-      .then(value => logStore.addEntry(value.data));
+      .then(value => logStore.addEntry(value.data))
+      .then(_ => emit('deleteMessage', props.message));
 
 }
 const messageDisabled = ref(false);

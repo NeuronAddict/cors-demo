@@ -1,21 +1,42 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import type {Message} from "@/core/message";
-import {messageService} from "@/services/service";
+import {logService, messageService} from "@/services/service";
+import type LogEntry from "@/core/log-entry";
+import type {CreateDTO} from "@/core/dto-types";
+import {logStore} from "@/core/logs-store";
 
 const props = defineProps<{
   message: Message;
 }>();
 
 const emit = defineEmits<{
-  (e: 'deleteMessage', message: Message): Promise<Response>
+  (e: 'deleteMessage', message: Message): Promise<Response>,
 }>()
 
 function deleteItem() {
-  messageService.delete(props.message).then(_ => emit('deleteMessage', props.message));
+  messageService.delete(props.message)
+      .then(_ => emit('deleteMessage', props.message))
+      .then(_ => emit('deleteMessage', props.message))
+      .then(_default => logService.post({
+        initiator: 'anonymous',
+        type: "delete",
+        message: props.message
+      }))
+      .then(value => logStore.addEntry(value.data));
+
 }
 const messageDisabled = ref(false);
+
+watch(messageDisabled, async (newValue, _) => {
+  const logEntry: CreateDTO<LogEntry> = {
+    message: props.message,
+    type: newValue ? "done" : "undone",
+    initiator: 'anonymous'
+  }
+  await logService.post(logEntry).then(value => logStore.addEntry(value.data));
+});
 
 </script>
 

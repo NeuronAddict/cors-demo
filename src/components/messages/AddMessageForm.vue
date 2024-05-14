@@ -1,8 +1,11 @@
 <script setup lang="ts">
 
 import {type Ref, ref} from "vue";
-import type {FormDTO, Message} from "@/core/message";
+import type {Message} from "@/core/message";
 import type {VForm} from "vuetify/components";
+import {logService, messageService} from "@/services/service";
+import type {CreateDTO, FormDTO} from "@/core/dto-types";
+import {logStore} from "@/core/logs-store";
 
 const props = defineProps<{
   author: string
@@ -32,21 +35,22 @@ async function addMessage(event: Event) {
     event.preventDefault();
   } else {
 
-    await fetch('/api/v1/messages', {
-      method: 'post',
-      body: JSON.stringify(message.value as Message),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-        .then(response => response.json())
-        .then(json => {
-          console.log('add message', json);
-          return emit('addMessage', json as Message);
+    await messageService.post(message.value as CreateDTO<Message>)
+        .then(response => {
+          console.log('add message', response.data);
+          emit('addMessage', response.data);
+          return response.data;
         })
+        .then(message => {
+          return logService.post({
+            message: message,
+            type: "add",
+            initiator: 'anonymous'
+          })
+        })
+        .then(logEntryResponse => logStore.addEntry(logEntryResponse.data))
         .then(_ => form.value!.reset())
         .catch(reason => errorReason.value = reason);
-
   }
 }
 

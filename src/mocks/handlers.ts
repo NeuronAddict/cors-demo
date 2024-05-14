@@ -111,6 +111,6 @@ export const restHandlers = [
         const id = parseInt(info.params.id as string);
         messageData.currentMessages = messageData.currentMessages.filter((_, index) => index !== id);
         console.log('delete for id', id, 'return 204');
-        return HttpResponse.text('', {status: 204});
+        return HttpResponse.text(null, {status: 204});
     })
 ]

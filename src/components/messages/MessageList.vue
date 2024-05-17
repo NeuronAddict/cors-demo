@@ -26,7 +26,7 @@ onMounted(() => {
 
 let { hashValue } = trackHash('author');
 
-let reverseMessages = computed(() => messageStore.messages.reverse().filter(
+let reverseMessages = computed(() => [...messageStore.messages].reverse().filter(
     value => hashValue.value !== null ? value.author === hashValue.value : true
 ));
 

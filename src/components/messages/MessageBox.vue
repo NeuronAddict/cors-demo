@@ -71,7 +71,7 @@ watch(messageDisabled, async (newValue, _) => {
     </template>
     <template v-slot:prepend>
     </template>
-    <v-list-item-title data-testid="message-box-item-author" class="mb-2">{{ props.message.author }} -
+    <v-list-item-title data-testid="message-box-item-author" class="mb-2">{{ props.message.author }}
       {{ props.message.dueDate }}
     </v-list-item-title>
 

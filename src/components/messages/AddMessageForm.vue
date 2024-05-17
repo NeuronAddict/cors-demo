@@ -72,7 +72,7 @@ async function addMessage(event: Event) {
               label="Task description"
               auto-grow
               v-model="message.message"
-              class="ma-2"
+              class="ma-0"
               ref="inputMessageTextArea"
               required="required"
               :rules="[
@@ -107,7 +107,7 @@ async function addMessage(event: Event) {
         </v-col>
       </v-row>
       <v-row justify="end">
-        <v-col cols="12">
+        <v-col cols="12" :hidden="!errorReason">
           <div class="text-end pa-2 text-body-1 text-error">{{ errorReason }}</div>
         </v-col>
       </v-row>

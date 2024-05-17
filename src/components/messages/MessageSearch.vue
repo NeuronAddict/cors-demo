@@ -13,7 +13,7 @@ function search() {
 
 function reset() {
   searchQuery.value = '';
-  window.location.hash
+  window.location.hash = ''
 }
 
 </script>
@@ -21,8 +21,11 @@ function reset() {
 <template>
   <v-sheet class="ma-2 pa-1">
     <v-row justify="start" align="center">
-      <v-col sd="10" md="4" cols="8">
-        <v-text-field class="ma-2"
+      <v-col sd="2" md="4">
+        <div class="pa-3" :hidden="hashValue == null">Search: author == "<strong>{{ hashValue }}</strong>"</div>
+      </v-col>
+      <v-col sd="10" md="6" cols="8">
+        <v-text-field class="ma-3"
                       color="secondary"
                       type="text"
                       v-model="searchQuery"
@@ -30,13 +33,8 @@ function reset() {
                       :clearable="true"
         ></v-text-field>
       </v-col>
-      <v-col sd="2" md="2">
-        <v-btn icon="mdi-magnify" class="ma-2 pa-1" @click="search"></v-btn>
-      </v-col>
-      <v-col md="4">
-        <div :hidden="hashValue == null">Search for author {{ hashValue }}</div>
-      </v-col>
       <v-col md="2">
+        <v-btn icon="mdi-magnify" class="ma-2 pa-1" @click="search"></v-btn>
         <v-btn icon="mdi-close" class="ma-2 pa-1" @click="reset"></v-btn>
       </v-col>
     </v-row>

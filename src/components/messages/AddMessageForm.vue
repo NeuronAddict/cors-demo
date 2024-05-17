@@ -6,6 +6,7 @@ import type {VForm} from "vuetify/components";
 import {logService, messageService} from "@/services/service";
 import type {CreateDTO, FormDTO} from "@/core/dto-types";
 import {logStore} from "@/core/logs-store";
+import {messageStore} from "@/core/messages-store";
 
 const props = defineProps<{
   author: string
@@ -41,9 +42,10 @@ async function addMessage(event: Event) {
           emit('addMessage', response.data);
           return response.data;
         })
-        .then(message => {
+        .then(value => {
+          messageStore.add(value);
           return logService.post({
-            message: message,
+            message: value,
             type: "add",
             initiator: 'anonymous'
           })

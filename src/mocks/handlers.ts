@@ -109,7 +109,7 @@ export const restHandlers = [
 
     http.delete('/api/v1/messages/:id', info => {
         const id = parseInt(info.params.id as string);
-        messageData.currentMessages = messageData.currentMessages.filter((_, index) => index !== id);
+        messageData.currentMessages = messageData.currentMessages.filter(value => value.id !== id);
         console.log('delete for id', id, 'return 204');
         return HttpResponse.text(null, {status: 204});
     })

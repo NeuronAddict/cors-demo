@@ -1,12 +1,11 @@
 /// <reference types="vitest" />
 // https://vitejs.dev/config/
-import { fileURLToPath, URL } from 'node:url'
+import {fileURLToPath, URL} from 'node:url'
 
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import ViteFonts from 'unplugin-fonts/vite'
-import vuetify from "vite-plugin-vuetify";
-import {transformAssetUrls} from "vite-plugin-vuetify";
+import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
 
 export default defineConfig({
   plugins: [
@@ -41,6 +40,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: "./tests/setup.ts",
     server: {
       deps: {
         inline: ['vuetify'],

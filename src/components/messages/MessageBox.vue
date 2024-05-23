@@ -42,7 +42,8 @@ watch(messageDisabled, async (newValue, _) => {
 </script>
 
 <template>
-  <v-list-item elevation="7" class="bg-surface surface ma-2 pa-4" :class="{ greyed: messageDisabled }">
+  <v-list-item elevation="7" class="bg-surface surface ma-2 pa-4" :class="{ greyed: messageDisabled }"
+               data-testid="message-box-item">
     <template v-slot:append>
       <v-list-item-action start>
         <v-checkbox-btn data-testid="message-box-item-cb"

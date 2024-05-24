@@ -7,6 +7,7 @@ import {logService, messageService} from "@/services/service";
 import type {CreateDTO, FormDTO} from "@/core/dto-types";
 import {logStore} from "@/core/logs-store";
 import {messageStore} from "@/core/messages-store";
+import type LogEntry from "@/core/log-entry";
 
 const props = defineProps<{
   author: string
@@ -44,22 +45,27 @@ async function addMessage(event: Event) {
         })
         .then(value => {
           messageStore.add(value);
-          return logService.post({
-            message: value,
-            type: "add",
-            initiator: 'anonymous'
-          })
+          return value;
         })
+        .then(value => logService.post({
+          message: value,
+          type: "add",
+          initiator: 'anonymous'
+        } as CreateDTO<LogEntry>))
         .then(logEntryResponse => logStore.addEntry(logEntryResponse.data))
-        .then(_ => form.value!.reset())
-        .catch(reason => errorReason.value = reason);
+        .then(() => form.value!.reset())
+        .catch(error => {
+          errorReason.value = error.message
+          console.error(error);
+        })
+
   }
 }
 
 </script>
 
 <template>
-  <v-form ref="form" @submit.prevent="addMessage">
+  <v-form ref="form" @submit.prevent="addMessage" data-testid="message-add">
     <v-sheet elevation="7" class="ma-2 pa-1">
       <v-row justify="space-around" align="center" class="ma-1 pa-1">
         <v-col sd="12" md="7">
@@ -78,7 +84,7 @@ async function addMessage(event: Event) {
               :rules="[
                   value => !!value || 'Please enter a value'
               ]"
-              data-testid="message-list-input-add"
+              data-testid="message-add-input"
 
           >
           </v-textarea>
@@ -93,11 +99,12 @@ async function addMessage(event: Event) {
                   (value) => dateReg.test(value) || 'Invalid date'
               ]"
               required="required"
+              data-testid="message-add-date"
           ></v-text-field>
         </v-col>
 
         <v-col md="2">
-          <v-btn data-testid="message-list-button-add"
+          <v-btn data-testid="message-add-button"
                  type="submit"
                  class="ma-2"
 

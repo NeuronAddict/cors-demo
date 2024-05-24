@@ -10,7 +10,8 @@
     "types": [
       "vite/client",
       "vite-plugin-vue-layouts/client",
-      "unplugin-vue-router/client"
+      "unplugin-vue-router/client",
+      "vitest/globals"
     ],
     "allowJs": true,
     "strict": true,
@@ -25,5 +26,12 @@
     "./src/typed-router.d.ts"
   ],
   "exclude": ["dist", "node_modules", "cypress"],
-  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.app.json"}],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

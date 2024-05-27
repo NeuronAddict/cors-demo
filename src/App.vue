@@ -8,21 +8,17 @@
         <v-navigation-drawer>
           <v-list>
             <v-list-item title="Navigation drawer"></v-list-item>
+            <v-list-item>
+              <RouterLink to="/">Home</RouterLink>
+              <RouterLink to="/profile"></RouterLink>
+            </v-list-item>
           </v-list>
         </v-navigation-drawer>
 
         <v-main>
           <v-container class="pa-0">
 
-            <v-row justify="center" no-gutters>
-
-              <v-col md="8" >
-                  <MessageList></MessageList>
-              </v-col>
-              <v-col md="4">
-                  <History></History>
-              </v-col>
-            </v-row>
+            <RouterView></RouterView>
 
           </v-container>
           <Footer></Footer>
@@ -36,10 +32,8 @@
 
 <script setup lang="ts">
 //
-import MessageList from "@/components/messages/MessageList.vue";
 import Footer from "@/components/layout/footer.vue";
 import AppBar from "@/components/layout/AppBar.vue";
-import History from "@/components/History.vue";
 </script>
 
 <style>

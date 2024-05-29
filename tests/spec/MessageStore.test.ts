@@ -1,7 +1,7 @@
 import {expect, test} from 'vitest'
 import {messageStore} from "../../src/core/messages-store";
 
-test('delete from messageStore', context => {
+test('delete from messageStore', () => {
     messageStore.messages = [
         {
             id: 1,
@@ -38,7 +38,7 @@ test('delete from messageStore', context => {
     expect(messageStore.messages).toHaveLength(4);
 });
 
-test('add from messageStore', context => {
+test('add from messageStore', () => {
     messageStore.messages = [
         {
             id: 1,
@@ -75,7 +75,7 @@ test('add from messageStore', context => {
     expect(messageStore.messages).toHaveLength(6);
 });
 
-test('modify from messageStore', context => {
+test('modify from messageStore', () => {
     messageStore.messages = [
         {
             id: 1,

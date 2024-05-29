@@ -9,8 +9,10 @@
           <v-list>
             <v-list-item title="Navigation drawer"></v-list-item>
             <v-list-item>
-              <RouterLink to="/">Home</RouterLink>
-              <RouterLink to="/profile"></RouterLink>
+              <RouterLink :to="{name: 'home'}">Home</RouterLink>
+            </v-list-item>
+            <v-list-item>
+              <RouterLink to="/auth">Auth</RouterLink>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>

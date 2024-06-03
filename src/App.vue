@@ -11,9 +11,6 @@
             <v-list-item>
               <RouterLink :to="{name: 'home'}">Home</RouterLink>
             </v-list-item>
-            <v-list-item>
-              <RouterLink to="/auth">Auth</RouterLink>
-            </v-list-item>
           </v-list>
         </v-navigation-drawer>
 

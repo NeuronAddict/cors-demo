@@ -1,11 +1,18 @@
 <script setup lang="ts">
 
+import {ref, type Ref} from "vue";
+import Auth from "@/core/auth";
+import type {User} from "oidc-client-ts";
+
 const items = [
   { title: 'Profile', path: '/profile' },
   { title: 'Preferences', path: '/preferences' },
   { title: 'Logout', path: '/logout' },
 
 ];
+
+let user: Ref<User | null> = ref(null);
+Auth.getUser().then(user_ => user.value = user_);
 
 </script>
 
@@ -20,7 +27,7 @@ const items = [
 
     <v-spacer></v-spacer>
 
-    <v-menu>
+    <v-menu v-if="user">
       <template v-slot:activator="{ props }">
         <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
       </template>
@@ -31,6 +38,8 @@ const items = [
       </v-list>
     </v-menu>
 
+    <v-btn v-if="!user" @click="() => Auth.signinRedirect()">Login</v-btn>
+    <v-btn v-if="user" @click="() => Auth.signoutRedirect()">Logout</v-btn>
 
   </v-app-bar>
 </template>

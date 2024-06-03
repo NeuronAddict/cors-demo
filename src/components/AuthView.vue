@@ -4,8 +4,12 @@ import auth from "@/core/auth";
 import {router} from "@/plugins/router";
 
 onMounted(async () => {
-  await auth.signinCallback();
-  await router.push("/");
+  try {
+    await auth.signinCallback();
+    await router.push("/");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 </script>

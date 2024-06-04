@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
 import auth from "@/core/auth";
-import {router} from "@/plugins/router";
 
 onMounted(async () => {
   try {
     await auth.signinCallback();
-    await router.push("/");
+    location.href = "/";
   } catch (error) {
     console.error(error);
   }

@@ -50,7 +50,9 @@ service:
 ingress:
   enabled: true
   className: ""
-  annotations: { }
+  annotations:
+    cert-manager.io/cluster-issuer: "web-issuer"
+    traefik.ingress.kubernetes.io/router.middlewares: "kube-system-redirect-https@kubernetescrd"
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:

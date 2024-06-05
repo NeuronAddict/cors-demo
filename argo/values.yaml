@@ -93,7 +93,7 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes:
-  - name: foo
+  - name: tmp
     emptyDir: { }
 # - name: foo
 #   secret:

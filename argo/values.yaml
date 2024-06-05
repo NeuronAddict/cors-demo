@@ -92,14 +92,19 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: [ ]
+volumes:
+  - name: foo
+    emptyDir: { }
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: [ ]
+volumeMounts:
+  - name: tmp
+    mountPath: /opt/bitnami/nginx/tmp
+    readOnly: false
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true

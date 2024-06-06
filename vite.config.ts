@@ -23,6 +23,9 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    sourcemap: (process.env.MODE === 'development')
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

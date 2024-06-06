@@ -1,9 +1,9 @@
 import {Log, UserManager, WebStorageStateStore} from 'oidc-client-ts'
 
 export const kc = {
-    authorityUrl: 'https://keycloak.barebone.ldmz',
-    realm: 'xss-demo',
-    clientId: 'vue-demo-local'
+    authorityUrl: import.meta.env.VITE_AUTHORITY_URL,
+    realm: import.meta.env.VITE_AUTH_REALM,
+    clientId: import.meta.env.VITE_AUTH_CLIENT_ID,
 }
 
 const Auth = new UserManager({

@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN yarn install
-RUN yarn run build-only
+RUN yarn run build
 
 FROM docker.io/bitnami/nginx:1.25.5
 

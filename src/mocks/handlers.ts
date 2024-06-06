@@ -92,7 +92,7 @@ export const restHandlers = [
     http.post('/api/v1/messages',
             async info => {
         const content = await info.request.clone().json() as CreateDTO<Message>;
-                let newMessage = {...content, id: messageData.nextId()} as Message;
+                const newMessage = {...content, id: messageData.nextId()} as Message;
                 messageData.currentMessages.push(newMessage);
         console.log('post, return', newMessage);
         return HttpResponse.json(newMessage);
@@ -101,7 +101,7 @@ export const restHandlers = [
     http.post('/api/v1/logs',
         async info => {
             const content = await info.request.clone().json() as CreateDTO<LogEntry>;
-            let newLogEntry = {...content, id: logsData.nextId()} as LogEntry;
+            const newLogEntry = {...content, id: logsData.nextId()} as LogEntry;
             logsData.currentLogs.push(newLogEntry);
             console.log('post, return', newLogEntry);
             return HttpResponse.json(newLogEntry);

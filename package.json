@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prod": "vite --mode production",
     "test": "vitest",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",

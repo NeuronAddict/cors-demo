@@ -2,9 +2,11 @@ FROM docker.io/bitnami/node:20 as builder
 
 WORKDIR /app
 
-COPY . .
+COPY package.json yarn.lock ./
 
 RUN yarn install
+
+COPY . .
 RUN yarn run build
 
 FROM docker.io/bitnami/nginx:1.25.5

@@ -1,5 +1,5 @@
 export async function enableMocking() {
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.MODE !== 'development') {
         return
     }
 

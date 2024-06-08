@@ -90,10 +90,10 @@ export const restHandlers = [
     http.get('/api/v1/logs', () => HttpResponse.json(logsData.currentLogs)),
 
     http.post('/api/v1/messages',
-            async info => {
+        async ({request}) => {
                 try {
-                    console.log(`receive a POST request: ${info.request.url} ${JSON.stringify(info.request.clone().body)}`);
-                    const content = await info.request.clone().json() as CreateDTO<Message>;
+                    const content = await request.json() as CreateDTO<Message>;
+                    console.log(`receive a POST request: ${request.url} ${content}`);
                     const newMessage = {...content, id: messageData.nextId()} as Message;
                     messageData.currentMessages.push(newMessage);
                     console.log('post, return', newMessage);
@@ -105,12 +105,18 @@ export const restHandlers = [
     }),
 
     http.post('/api/v1/logs',
-        async info => {
-            const content = await info.request.clone().json() as CreateDTO<LogEntry>;
-            const newLogEntry = {...content, id: logsData.nextId()} as LogEntry;
-            logsData.currentLogs.push(newLogEntry);
-            console.log('post, return', newLogEntry);
-            return HttpResponse.json(newLogEntry);
+        async ({request}) => {
+            try {
+                const content = await request.json() as CreateDTO<LogEntry>;
+                console.log(`receive a POST request: ${request.url} ${content}`);
+                const newLogEntry = {...content, id: logsData.nextId()} as LogEntry;
+                logsData.currentLogs.push(newLogEntry);
+                console.log('post, return', newLogEntry);
+                return HttpResponse.json(newLogEntry);
+            } catch (error) {
+                console.error(error);
+                return HttpResponse.error();
+            }
         }),
 
     http.delete('/api/v1/messages/:id', info => {

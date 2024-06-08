@@ -91,11 +91,17 @@ export const restHandlers = [
 
     http.post('/api/v1/messages',
             async info => {
-        const content = await info.request.clone().json() as CreateDTO<Message>;
-                const newMessage = {...content, id: messageData.nextId()} as Message;
-                messageData.currentMessages.push(newMessage);
-        console.log('post, return', newMessage);
-        return HttpResponse.json(newMessage);
+                try {
+                    console.log(`receive a POST request: ${info.request.url} ${JSON.stringify(info.request.clone().body)}`);
+                    const content = await info.request.clone().json() as CreateDTO<Message>;
+                    const newMessage = {...content, id: messageData.nextId()} as Message;
+                    messageData.currentMessages.push(newMessage);
+                    console.log('post, return', newMessage);
+                    return HttpResponse.json(newMessage);
+                } catch (error) {
+                    console.error(error);
+                    return HttpResponse.error();
+                }
     }),
 
     http.post('/api/v1/logs',

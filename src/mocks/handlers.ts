@@ -69,7 +69,6 @@ export const MockLogs: LogEntry[] = [
     },
 ];
 
-
 const messageData = {
     currentMessages: mockMessages,
     id: mockMessages.length + 1,
@@ -87,12 +86,12 @@ export const restHandlers = [
         console.log('get, return', messageData.currentMessages);
         return HttpResponse.json(messageData.currentMessages);
     }),
-    http.get('/api/v1/logs', () => HttpResponse.json(logsData.currentLogs)),
+    http.get<never, never, LogEntry[]>('/api/v1/logs', () => HttpResponse.json(logsData.currentLogs)),
 
-    http.post('/api/v1/messages',
+    http.post<never, CreateDTO<Message>, Message>('/api/v1/messages',
         async ({request}) => {
                 try {
-                    const content = await request.json() as CreateDTO<Message>;
+                    const content = await request.json();
                     console.log(`receive a POST request: ${request.url} ${content}`);
                     const newMessage = {...content, id: messageData.nextId()} as Message;
                     messageData.currentMessages.push(newMessage);
@@ -100,11 +99,11 @@ export const restHandlers = [
                     return HttpResponse.json(newMessage);
                 } catch (error) {
                     console.error(error);
-                    return HttpResponse.error();
+                    return HttpResponse.json(null, {status: 500, statusText: 'Server Error'});
                 }
     }),
 
-    http.post('/api/v1/logs',
+    http.post<never, CreateDTO<LogEntry>, LogEntry>('/api/v1/logs',
         async ({request}) => {
             try {
                 const content = await request.json() as CreateDTO<LogEntry>;
@@ -115,12 +114,12 @@ export const restHandlers = [
                 return HttpResponse.json(newLogEntry);
             } catch (error) {
                 console.error(error);
-                return HttpResponse.error();
+                return HttpResponse.json(null, {status: 500, statusText: 'Server Error'});
             }
         }),
 
-    http.delete('/api/v1/messages/:id', info => {
-        const id = parseInt(info.params.id as string);
+    http.delete<{ id: string }>('/api/v1/messages/:id', info => {
+        const id = parseInt(info.params.id);
         messageData.currentMessages = messageData.currentMessages.filter(value => value.id !== id);
         console.log('delete for id', id, 'return 204');
         return HttpResponse.text(null, {status: 204});

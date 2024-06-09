@@ -1,4 +1,4 @@
-import {http, HttpResponse} from 'msw'
+import {type DefaultBodyType, http, HttpResponse, type HttpResponseResolver, type PathParams} from 'msw'
 import type {Message} from "@/core/message";
 import type {CreateDTO} from "@/core/dto-types";
 import type LogEntry from "@/core/log-entry";
@@ -154,17 +154,29 @@ const logsData = {
     currentLogs: MockLogs,
     id: MockLogs.length + 1,
     nextId: () => logsData.id++
+};
+
+function withAuth<Params extends PathParams,
+    RequestBodyType extends DefaultBodyType,
+    ResponseBodyType extends DefaultBodyType>(resolver: HttpResponseResolver<Params, RequestBodyType, ResponseBodyType>): HttpResponseResolver<Params, RequestBodyType, ResponseBodyType> {
+    return info => {
+        if (!info.request.headers.get('Authorization')) {
+            return HttpResponse.json(null, {status: 403, statusText: 'Unauthorized'});
+        }
+
+        return resolver(info);
+    }
 }
 
 export const restHandlers = [
-    http.get('/api/v1/messages', () => {
+    http.get('/api/v1/messages', withAuth(() => {
         console.log('get, return', messageData.currentMessages);
         return HttpResponse.json(messageData.currentMessages);
-    }),
-    http.get<never, never, LogEntry[]>('/api/v1/logs', () => HttpResponse.json(logsData.currentLogs)),
+    })),
+    http.get<never, never, LogEntry[]>('/api/v1/logs', withAuth(() => HttpResponse.json(logsData.currentLogs))),
 
     http.post<never, CreateDTO<Message>, Message>('/api/v1/messages',
-        async ({request}) => {
+        withAuth(async ({request}) => {
             try {
                 const content = await request.json();
                 console.log(`receive a POST request: ${request.url} ${content}`);
@@ -176,10 +188,10 @@ export const restHandlers = [
                 console.error(error);
                 return HttpResponse.json(null, {status: 500, statusText: 'Server Error'});
             }
-        }),
+        })),
 
     http.post<never, CreateDTO<LogEntry>, LogEntry>('/api/v1/logs',
-        async ({request}) => {
+        withAuth(async ({request}) => {
             try {
                 const content = await request.json() as CreateDTO<LogEntry>;
                 console.log(`receive a POST request: ${request.url} ${content}`);
@@ -191,12 +203,12 @@ export const restHandlers = [
                 console.error(error);
                 return HttpResponse.json(null, {status: 500, statusText: 'Server Error'});
             }
-        }),
+        })),
 
-    http.delete<{ id: string }>('/api/v1/messages/:id', info => {
+    http.delete<{ id: string }, never, string>('/api/v1/messages/:id', withAuth((info) => {
         const id = parseInt(info.params.id);
         messageData.currentMessages = messageData.currentMessages.filter(value => value.id !== id);
         console.log('delete for id', id, 'return 204');
         return HttpResponse.text(null, {status: 204});
-    })
+    }))
 ]

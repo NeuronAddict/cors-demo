@@ -36,3 +36,21 @@ test('List Messages', async () => {
     });
 });
 
+test('List Messages When auth error', async () => {
+
+    const wrapper = mount(MessageList, {
+        global: {
+            plugins: [vuetify],
+        }
+    });
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const findAll = wrapper.findAll('[data-testid=message-box-item]');
+    expect(findAll).toHaveLength(0);
+    expect(wrapper.find('[data-testid=message-list-error]').text()).toEqual('Error :/ AxiosError: Request failed with status code 403');
+    console.log(wrapper.html());
+
+});
+

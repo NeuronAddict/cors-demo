@@ -4,11 +4,17 @@ import {flushPromises, mount} from "@vue/test-utils";
 import vuetify from "../../src/plugins/vuetify";
 import AddMessageForm from "../../src/components/messages/AddMessageForm.vue";
 import {logStore} from "../../src/core/logs-store";
+import instance from "../../src/services/config";
 
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
 test('Add message', async () => {
+
+    instance.interceptors.request.use(async config => {
+        config.headers.Authorization = `Bearer FakeAccessToken`;
+        return config;
+    });
 
     const wrapper = mount(AddMessageForm, {
         global: {

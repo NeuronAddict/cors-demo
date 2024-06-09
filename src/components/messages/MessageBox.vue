@@ -1,12 +1,12 @@
 <script setup lang="ts">
 
-import {ref, watch} from "vue";
+import {inject, ref, watch} from "vue";
 import type {Message} from "@/core/message";
-import {logService, messageService} from "@/services/service";
 import type LogEntry from "@/core/log-entry";
 import type {CreateDTO} from "@/core/dto-types";
 import {logStore} from "@/core/logs-store";
 import {messageStore} from "@/core/messages-store";
+import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/provider";
 
 const props = defineProps<{
   message: Message;
@@ -15,6 +15,9 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'deleteMessage', message: Message): Promise<Response>,
 }>()
+
+const messageService = inject(messageServiceProviderKey)!;
+const logService = inject(logsServiceProviderKey)!;
 
 function deleteItem() {
   messageService.delete(props.message)

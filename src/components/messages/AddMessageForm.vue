@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
-import {type Ref, ref} from "vue";
+import {inject, type Ref, ref} from "vue";
 import type {Message} from "@/core/message";
 import type {VForm} from "vuetify/components";
-import {logService, messageService} from "@/services/service";
 import type {CreateDTO, FormDTO} from "@/core/dto-types";
 import {logStore} from "@/core/logs-store";
 import {messageStore} from "@/core/messages-store";
 import type LogEntry from "@/core/log-entry";
+import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/provider";
 
 const props = defineProps<{
   author: string
@@ -29,6 +29,8 @@ const message: Ref<FormDTO<Message>> = ref({
 
 const errorReason = ref("");
 
+const messageService = inject(messageServiceProviderKey)!;
+const logService = inject(logsServiceProviderKey)!;
 
 async function addMessage(event: Event) {
   const valid = await form.value?.validate();

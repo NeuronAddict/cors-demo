@@ -1,15 +1,16 @@
-import config from '@/services/config'
 import type {CreateDTO} from "@/core/dto-types";
 import type {Message} from "@/core/message";
 import type LogEntry from "@/core/log-entry";
 import type {AxiosInstance, AxiosResponse} from "axios";
 
-function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: string): {
+export type Service<T> = {
     get: () => Promise<AxiosResponse<T[]>>;
     post: (itemToAdd: CreateDTO<T>) => Promise<AxiosResponse<T>>;
     put: (newItem: T) => Promise<AxiosResponse<T>>;
     delete: (itemToDelete: T) => Promise<AxiosResponse<void>>;
-} {
+}
+
+function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: string): Service<T> {
     return {
         get: () => axiosInstance.get<T[]>(`/${path}`),
         post: (itemToAdd: CreateDTO<T>) => axiosInstance.post<T>(`/${path}`, itemToAdd),
@@ -18,5 +19,5 @@ function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: s
     }
 }
 
-export const messageService = service<Message>(config, 'messages');
-export const logService = service<LogEntry>(config, 'logs');
+export const messageService = (axiosInstance: AxiosInstance) => service<Message>(axiosInstance, 'messages');
+export const logService = (axiosInstance: AxiosInstance) => service<LogEntry>(axiosInstance, 'logs');

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
 
-import {logService} from "@/services/service";
-import {onMounted} from "vue";
+import {inject, onMounted} from "vue";
 import {logStore} from "@/core/logs-store";
+import {logsServiceProviderKey} from "@/core/provider";
 
+const logService = inject(logsServiceProviderKey)!;
 
 onMounted(() => {
   logService.get().then(value => logStore.logs = value.data)

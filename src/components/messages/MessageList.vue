@@ -1,15 +1,16 @@
 <script setup lang="ts">
 
 import MessageBox from "@/components/messages/MessageBox.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, inject, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";
 import AddMessageForm from "@/components/messages/AddMessageForm.vue";
-import {messageService} from "@/services/service";
 import MessageSearch from "@/components/messages/MessageSearch.vue";
 import {messageStore} from "@/core/messages-store";
+import {messageServiceProviderKey} from "@/core/provider";
 
 let loaded = ref(false);
 
+const messageService = inject(messageServiceProviderKey)!;
 
 onMounted(() => {
 

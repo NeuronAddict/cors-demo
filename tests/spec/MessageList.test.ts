@@ -4,11 +4,17 @@ import MessageList from "../../src/components/messages/MessageList.vue";
 import vuetify from "../../src/plugins/vuetify";
 import {expect, test} from "vitest";
 import {mockMessages} from "../../src/mocks/handlers";
+import instance from "../../src/services/config";
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
 
 test('List Messages', async () => {
+
+    instance.interceptors.request.use(async config => {
+        config.headers.Authorization = `Bearer FakeAccessToken`;
+        return config;
+    });
 
     const wrapper = mount(MessageList, {
         global: {
@@ -19,7 +25,7 @@ test('List Messages', async () => {
     await wrapper.vm.$nextTick();
     await flushPromises();
 
-    let findAll = wrapper.findAll('[data-testid=message-box-item]');
+    const findAll = wrapper.findAll('[data-testid=message-box-item]');
     expect(findAll).toHaveLength(15);
 
     let i = 0;

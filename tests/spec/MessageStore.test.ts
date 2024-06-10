@@ -1,8 +1,11 @@
 import {expect, test} from 'vitest'
-import {messageStore} from "../../src/core/store-provider";
+import {messageStoreProvider} from "../../src/core/store-provider";
 
 test('delete from messageStore', () => {
-    messageStore.messages = [
+
+    const messageStore = messageStoreProvider();
+
+    messageStore.items = [
         {
             id: 1,
             author: "Truc",
@@ -34,12 +37,15 @@ test('delete from messageStore', () => {
             message: "Quisque et convallis enim, eu laoreet augue. Nullam dui sapien, faucibus et ultrices ut, porttitor id ligula. Nullam et vestibulum sapien. Nam commodo, ex vel pulvinar finibus, purus metus tristique lacus, non volutpat magna nulla quis quam. In vestibulum hendrerit odio, sit amet."
         }
     ]
-    messageStore.delete(messageStore.messages[0]);
-    expect(messageStore.messages).toHaveLength(4);
+    messageStore.delete(messageStore.items[0]);
+    expect(messageStore.items).toHaveLength(4);
 });
 
 test('add from messageStore', () => {
-    messageStore.messages = [
+
+    const messageStore = messageStoreProvider();
+
+    messageStore.items = [
         {
             id: 1,
             author: "Truc",
@@ -72,11 +78,14 @@ test('add from messageStore', () => {
         }
     ]
     messageStore.add({id: 6, author: "Truc6", dueDate: '07/07/2025', message: "Quisque et "});
-    expect(messageStore.messages).toHaveLength(6);
+    expect(messageStore.items).toHaveLength(6);
 });
 
 test('modify from messageStore', () => {
-    messageStore.messages = [
+
+    const messageStore = messageStoreProvider();
+
+    messageStore.items = [
         {
             id: 1,
             author: "Truc",
@@ -110,8 +119,8 @@ test('modify from messageStore', () => {
     ]
     const item = {id: 5, author: "Truc5", dueDate: '07/07/2025', message: "Quisque et "};
     messageStore.modify(item);
-    expect(messageStore.messages).toHaveLength(5);
-    expect(messageStore.messages[4]).toEqual(item);
+    expect(messageStore.items).toHaveLength(5);
+    expect(messageStore.items[4]).toEqual(item);
 });
 
 

@@ -169,7 +169,7 @@ function withAuth<Params extends PathParams,
 }
 
 export const restHandlers = [
-    http.get('/api/v1/messages', withAuth(() => {
+    http.get<never, never, Message[], '/api/v1/messages'>('/api/v1/messages', withAuth(() => {
         console.log('get, return', messageData.currentMessages);
         return HttpResponse.json(messageData.currentMessages);
     })),

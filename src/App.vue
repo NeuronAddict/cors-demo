@@ -1,41 +1,38 @@
 <template>
-  <ServiceProvider>
-    <v-theme-provider theme="custom">
-      <v-app>
-        <v-layout class="rounded rounded-md">
+  <v-theme-provider theme="custom">
+    <v-app>
+      <v-layout class="rounded rounded-md">
 
-          <AppBar></AppBar>
+        <AppBar></AppBar>
 
-          <v-navigation-drawer>
-            <v-list>
-              <v-list-item title="Navigation drawer"></v-list-item>
-              <v-list-item>
-                <RouterLink :to="{name: 'home'}">Home</RouterLink>
-              </v-list-item>
-            </v-list>
-          </v-navigation-drawer>
+        <v-navigation-drawer>
+          <v-list>
+            <v-list-item title="Navigation drawer"></v-list-item>
+            <v-list-item>
+              <RouterLink :to="{name: 'home'}">Home</RouterLink>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
 
-          <v-main>
-            <v-container class="pa-0">
+        <v-main>
+          <v-container class="pa-0">
 
-              <RouterView></RouterView>
+            <RouterView></RouterView>
 
-            </v-container>
-            <Footer></Footer>
-          </v-main>
+          </v-container>
+          <Footer></Footer>
+        </v-main>
 
-        </v-layout>
+      </v-layout>
 
-      </v-app>
-    </v-theme-provider>
-  </ServiceProvider>
+    </v-app>
+  </v-theme-provider>
 </template>
 
 <script setup lang="ts">
 //
 import Footer from "@/components/layout/footer.vue";
 import AppBar from "@/components/layout/AppBar.vue";
-import ServiceProvider from "@/components/ServiceProvider.vue";
 </script>
 
 <style>

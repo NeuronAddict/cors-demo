@@ -4,14 +4,17 @@ import {flushPromises, mount} from "@vue/test-utils";
 import vuetify from "../../src/plugins/vuetify";
 import AddMessageForm from "../../src/components/messages/AddMessageForm.vue";
 import {logStore} from "../../src/core/logs-store";
-import instance from "../../src/services/config";
+import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/provider";
+import {logService, messageService} from "../../src/services/service";
+import axiosConfig from "../../src/services/axios-config";
 
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
 test('Add message', async () => {
 
-    instance.interceptors.request.use(async config => {
+    const axiosInstance = axiosConfig.newAxios();
+    axiosInstance.interceptors.request.use(async config => {
         config.headers.Authorization = `Bearer FakeAccessToken`;
         return config;
     });
@@ -19,11 +22,14 @@ test('Add message', async () => {
     const wrapper = mount(AddMessageForm, {
         global: {
             plugins: [vuetify],
+            provide: {
+                [messageServiceProviderKey]: messageService(axiosInstance),
+                [logsServiceProviderKey]: logService(axiosInstance)
+            }
         },
         props: {
             author: 'anonymous'
-        },
-
+        }
     });
 
     await wrapper.get('[data-testid=message-add-input]')

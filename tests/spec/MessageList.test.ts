@@ -4,14 +4,20 @@ import MessageList from "../../src/components/messages/MessageList.vue";
 import vuetify from "../../src/plugins/vuetify";
 import {expect, test} from "vitest";
 import {mockMessages} from "../../src/mocks/handlers";
-import instance from "../../src/services/config";
+import instanceProvider from "../../src/services/axios-config";
+import {logService, messageService} from "../../src/services/service";
+import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/provider";
+import {server} from "../setup";
+import {http, HttpResponse} from "msw";
+import {service} from "../../src/plugins/service";
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
 
 test('List Messages', async () => {
 
-    instance.interceptors.request.use(async config => {
+    const axiosInstance = instanceProvider.newAxios();
+    axiosInstance.interceptors.request.use(async config => {
         config.headers.Authorization = `Bearer FakeAccessToken`;
         return config;
     });
@@ -19,7 +25,11 @@ test('List Messages', async () => {
     const wrapper = mount(MessageList, {
         global: {
             plugins: [vuetify],
-        }
+            provide: {
+                [messageServiceProviderKey]: messageService(axiosInstance),
+                [logsServiceProviderKey]: logService(axiosInstance)
+            }
+        },
     });
 
     await wrapper.vm.$nextTick();
@@ -38,9 +48,13 @@ test('List Messages', async () => {
 
 test('List Messages When auth error', async () => {
 
+    server.use(
+        http.get('/api/v1/messages', () => HttpResponse.text(null, {status: 403}))
+    )
+
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify],
+            plugins: [vuetify, service]
         }
     });
 
@@ -50,7 +64,6 @@ test('List Messages When auth error', async () => {
     const findAll = wrapper.findAll('[data-testid=message-box-item]');
     expect(findAll).toHaveLength(0);
     expect(wrapper.find('[data-testid=message-list-error]').text()).toEqual('Error :/ AxiosError: Request failed with status code 403');
-    console.log(wrapper.html());
 
 });
 

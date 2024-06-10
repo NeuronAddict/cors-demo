@@ -4,9 +4,8 @@ import {inject, ref, watch} from "vue";
 import type {Message} from "@/core/message";
 import type LogEntry from "@/core/log-entry";
 import type {CreateDTO} from "@/core/dto-types";
-import {logStore} from "@/core/logs-store";
-import {messageStore} from "@/core/messages-store";
-import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/provider";
+import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
+import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
 
 const props = defineProps<{
   message: Message;
@@ -18,6 +17,8 @@ const emit = defineEmits<{
 
 const messageService = inject(messageServiceProviderKey)!;
 const logService = inject(logsServiceProviderKey)!;
+const messageStore = inject(messageStoreProviderKey)!;
+const logStore = inject(logStoreProviderKey)!;
 
 function deleteItem() {
   messageService.delete(props.message)
@@ -27,7 +28,7 @@ function deleteItem() {
         type: "delete",
         message: props.message
       }))
-      .then(value => logStore.addEntry(value.data))
+      .then(value => logStore.add(value.data))
       .then(_ => emit('deleteMessage', props.message));
 
 }
@@ -39,7 +40,7 @@ watch(messageDisabled, async (newValue, _) => {
     type: newValue ? "done" : "undone",
     initiator: 'anonymous'
   }
-  await logService.post(logEntry).then(value => logStore.addEntry(value.data));
+  await logService.post(logEntry).then(value => logStore.add(value.data));
 });
 
 </script>

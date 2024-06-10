@@ -4,10 +4,9 @@ import {inject, type Ref, ref} from "vue";
 import type {Message} from "@/core/message";
 import type {VForm} from "vuetify/components";
 import type {CreateDTO, FormDTO} from "@/core/dto-types";
-import {logStore} from "@/core/logs-store";
-import {messageStore} from "@/core/messages-store";
 import type LogEntry from "@/core/log-entry";
-import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/provider";
+import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
+import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
 
 const props = defineProps<{
   author: string
@@ -31,6 +30,8 @@ const errorReason = ref("");
 
 const messageService = inject(messageServiceProviderKey)!;
 const logService = inject(logsServiceProviderKey)!;
+const messageStore = inject(messageStoreProviderKey)!;
+const logStore = inject(logStoreProviderKey)!;
 
 async function addMessage(event: Event) {
   const valid = await form.value?.validate();
@@ -54,7 +55,7 @@ async function addMessage(event: Event) {
           type: "add",
           initiator: 'anonymous'
         } as CreateDTO<LogEntry>))
-        .then(logEntryResponse => logStore.addEntry(logEntryResponse.data))
+        .then(logEntryResponse => logStore.add(logEntryResponse.data))
         .then(() => form.value!.reset())
         .catch(error => {
           errorReason.value = error.message

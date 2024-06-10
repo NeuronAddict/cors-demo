@@ -5,17 +5,18 @@ import {computed, inject, onMounted, ref} from "vue";
 import {trackHash} from "@/core/hash-compute";
 import AddMessageForm from "@/components/messages/AddMessageForm.vue";
 import MessageSearch from "@/components/messages/MessageSearch.vue";
-import {messageStore} from "@/core/messages-store";
-import {messageServiceProviderKey} from "@/core/provider";
+import {messageServiceProviderKey} from "@/core/service-provider";
+import {messageStoreProviderKey} from "@/core/store-provider";
 
 let loaded = ref(false);
 
 const messageService = inject(messageServiceProviderKey)!;
+const messageStore = inject(messageStoreProviderKey)!;
 
 onMounted(() => {
 
   messageService.get()
-      .then(response => messageStore.messages = response.data)
+      .then(response => messageStore.items = response.data)
       .catch(reason => {
         console.log(reason);
         errorReason.value = reason;
@@ -27,7 +28,7 @@ onMounted(() => {
 
 let { hashValue } = trackHash('author');
 
-let reverseMessages = computed(() => [...messageStore.messages].reverse().filter(
+let reverseMessages = computed(() => [...messageStore.items].reverse().filter(
     value => hashValue.value !== null ? value.author === hashValue.value : true
 ));
 

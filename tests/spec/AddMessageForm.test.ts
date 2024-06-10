@@ -1,10 +1,10 @@
 import {expect, test} from "vitest";
-import {messageStore} from "../../src/core/messages-store";
+import {messageStore} from "../../src/core/store-provider";
 import {flushPromises, mount} from "@vue/test-utils";
 import vuetify from "../../src/plugins/vuetify";
 import AddMessageForm from "../../src/components/messages/AddMessageForm.vue";
 import {logStore} from "../../src/core/logs-store";
-import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/provider";
+import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/service-provider";
 import {logService, messageService} from "../../src/services/service";
 import axiosConfig from "../../src/services/axios-config";
 

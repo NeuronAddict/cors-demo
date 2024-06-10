@@ -1,5 +1,5 @@
 import {expect, test} from 'vitest'
-import {messageStore} from "../../src/core/messages-store";
+import {messageStore} from "../../src/core/store-provider";
 
 test('delete from messageStore', () => {
     messageStore.messages = [

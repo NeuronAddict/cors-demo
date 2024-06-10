@@ -2,7 +2,7 @@ import {afterAll, afterEach, beforeAll} from 'vitest'
 import {setupServer} from 'msw/node'
 import {restHandlers} from "../src/mocks/handlers";
 
-const server = setupServer(...restHandlers)
+export const server = setupServer(...restHandlers)
 
 // Start server before all tests
 beforeAll(() => server.listen({onUnhandledRequest: 'error'}))

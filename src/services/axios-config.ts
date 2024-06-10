@@ -1,7 +1,7 @@
 import axios from "axios";
 import Auth from "@/core/auth";
 
-const instanceProvider = () => {
+const axiosInstanceProvider = () => {
     const instance = axios.create({
         baseURL: import.meta.env.VITE_BASE_URL,
     });
@@ -15,4 +15,4 @@ const instanceProvider = () => {
     return instance;
 }
 
-export default instanceProvider();
+export default {newAxios: axiosInstanceProvider};

@@ -1,6 +1,6 @@
 import type {App} from "vue";
 import config from "@/services/axios-config";
-import {axiosInstanceProviderKey, logsServiceProviderKey, messageServiceProviderKey} from "@/core/provider";
+import {axiosInstanceProviderKey, logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logService, messageService} from "@/services/service";
 
 export const service = {

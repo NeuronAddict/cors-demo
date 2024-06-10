@@ -6,7 +6,7 @@ import {expect, test} from "vitest";
 import {mockMessages} from "../../src/mocks/handlers";
 import instanceProvider from "../../src/services/axios-config";
 import {logService, messageService} from "../../src/services/service";
-import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/provider";
+import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/service-provider";
 import {server} from "../setup";
 import {http, HttpResponse} from "msw";
 import {service} from "../../src/plugins/service";

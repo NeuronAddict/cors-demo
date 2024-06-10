@@ -50,7 +50,7 @@ test('List Messages When auth error', async () => {
 
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify, service]
+            plugins: [vuetify, service, store]
         }
     });
 

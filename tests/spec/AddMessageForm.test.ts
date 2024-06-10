@@ -2,15 +2,9 @@ import {expect, test} from "vitest";
 import {flushPromises, mount} from "@vue/test-utils";
 import vuetify from "../../src/plugins/vuetify";
 import AddMessageForm from "../../src/components/messages/AddMessageForm.vue";
-import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/service-provider";
-import {logService, messageService} from "../../src/services/service";
 import axiosConfig from "../../src/services/axios-config";
-import {
-    logStoreProvider,
-    logStoreProviderKey,
-    messageStoreProvider,
-    messageStoreProviderKey
-} from "../../src/core/store-provider";
+import {logStoreProvider, messageStoreProvider,} from "../../src/core/store-provider";
+import {testServicePlugin, testStorePlugin} from "../plugins";
 
 
 global.ResizeObserver = require('resize-observer-polyfill')
@@ -28,13 +22,7 @@ test('Add message', async () => {
 
     const wrapper = mount(AddMessageForm, {
         global: {
-            plugins: [vuetify],
-            provide: {
-                [messageServiceProviderKey]: messageService(axiosInstance),
-                [logsServiceProviderKey]: logService(axiosInstance),
-                [messageStoreProviderKey]: messageStore,
-                [logStoreProviderKey]: logStore
-            }
+            plugins: [vuetify, testServicePlugin(axiosInstance), testStorePlugin(messageStore, logStore)],
         },
         props: {
             author: 'anonymous'

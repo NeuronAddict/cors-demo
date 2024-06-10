@@ -5,11 +5,11 @@ import vuetify from "../../src/plugins/vuetify";
 import {expect, test} from "vitest";
 import {mockMessages} from "../../src/mocks/handlers";
 import instanceProvider from "../../src/services/axios-config";
-import {logService, messageService} from "../../src/services/service";
-import {logsServiceProviderKey, messageServiceProviderKey} from "../../src/core/service-provider";
 import {server} from "../setup";
 import {http, HttpResponse} from "msw";
 import {service} from "../../src/plugins/service";
+import {testServicePlugin} from "../plugins";
+import {store} from "../../src/plugins/store";
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
@@ -24,11 +24,7 @@ test('List Messages', async () => {
 
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify],
-            provide: {
-                [messageServiceProviderKey]: messageService(axiosInstance),
-                [logsServiceProviderKey]: logService(axiosInstance)
-            }
+            plugins: [vuetify, testServicePlugin(axiosInstance), store],
         },
     });
 

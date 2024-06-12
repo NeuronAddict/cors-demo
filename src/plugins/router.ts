@@ -2,7 +2,6 @@ import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 import MessagesView from "@/components/MessagesView.vue";
 import AuthView from "@/components/AuthView.vue";
 import SilentRefreshView from "@/components/SilentRefreshView.vue";
-import HelloWorld from "@/components/HelloWorld.vue";
 import UnauthView from "@/components/UnauthView.vue";
 import Auth from "@/core/auth";
 import ProfileView from "@/components/ProfileView.vue";
@@ -14,11 +13,6 @@ const routes: Readonly<RouteRecordRaw[]> = [
         path: '/',
         component: MessagesView,
         meta: {requiresAuth: true}
-    },
-    {
-        name: 'hello',
-        path: '/hello',
-        component: HelloWorld
     },
     {
         name: 'auth',

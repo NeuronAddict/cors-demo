@@ -4,6 +4,7 @@ import type {Message} from "@/core/message";
 import type {Provider} from "@/core/provider";
 import type LogEntry from "@/core/log-entry";
 import type {InjectionKey} from "vue";
+import type {UnwrapNestedRefs} from "@vue/reactivity";
 
 export class AddOnlyStore<T extends { id: number }> {
 
@@ -39,7 +40,7 @@ export class Store<T extends { id: number }> extends AddOnlyStore<T> {
 }
 
 export const messageStoreProvider: Provider<Store<Message>> = () => new Store<Message>();
-export const messageStoreProviderKey: InjectionKey<Store<Message>> = Symbol("messageStoreProvider");
+export const messageStoreProviderKey: InjectionKey<UnwrapNestedRefs<Store<Message>>> = Symbol("messageStoreProvider");
 
 export const logStoreProvider: Provider<Store<LogEntry>> = () => new Store<LogEntry>();
-export const logStoreProviderKey: InjectionKey<Store<LogEntry>> = Symbol("logStoreProvider");
+export const logStoreProviderKey: InjectionKey<UnwrapNestedRefs<Store<LogEntry>>> = Symbol("logStoreProvider");

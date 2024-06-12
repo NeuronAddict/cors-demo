@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import History from "@/components/History.vue";
 import MessageList from "@/components/messages/MessageList.vue";
+import HistoryView from "@/components/HistoryView.vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import MessageList from "@/components/messages/MessageList.vue";
       <MessageList></MessageList>
     </v-col>
     <v-col md="4">
-      <History></History>
+      <HistoryView></HistoryView>
     </v-col>
   </v-row>
 </template>

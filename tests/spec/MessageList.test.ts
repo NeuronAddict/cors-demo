@@ -8,10 +8,12 @@ import instanceProvider from "../../src/services/axios-config";
 import {server} from "../setup";
 import {http, HttpResponse} from "msw";
 import {service} from "../../src/plugins/service";
-import {testServicePlugin} from "../plugins";
+import {testServicePlugin, testStorePlugin} from "../plugins";
 import {store} from "../../src/plugins/store";
 import MessageBox from "../../src/components/messages/MessageBox.vue";
 import {VCheckbox} from "vuetify/components/VCheckbox";
+import {VBtn} from "vuetify/components/VBtn";
+import {logStoreProvider, messageStoreProvider} from "../../src/core/store-provider";
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
@@ -73,9 +75,12 @@ test('Set Task done', async () => {
         return config;
     });
 
+    const messageStore = messageStoreProvider();
+    const logStore = logStoreProvider();
+
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify, testServicePlugin(axiosInstance), store],
+            plugins: [vuetify, testServicePlugin(axiosInstance), testStorePlugin(messageStore, logStore)],
         },
     });
 
@@ -101,4 +106,58 @@ test('Set Task done', async () => {
 
     expect(checkedItem.classes('greyed')).toBe(false);
 
+    expect(logStore.items).toHaveLength(2);
+    expect(logStore.items[0].type).toBe("done");
+    expect(logStore.items[0].message.message).toContain('Quisque et convallis eni');
+
+
+    expect(logStore.items[1].type).toBe("undone");
+    expect(logStore.items[0].message.message).toContain('Quisque et convallis eni');
+});
+
+test('Delete task', async () => {
+
+    const axiosInstance = instanceProvider.newAxios();
+    axiosInstance.interceptors.request.use(async config => {
+        config.headers.Authorization = `Bearer FakeAccessToken`;
+        return config;
+    });
+
+    const messageStore = messageStoreProvider();
+    const logStore = logStoreProvider();
+
+    const wrapper = mount(MessageList, {
+        global: {
+            plugins: [vuetify, testServicePlugin(axiosInstance), testStorePlugin(messageStore, logStore)],
+        },
+    });
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const initialResults = wrapper.findAllComponents(MessageBox);
+
+    const dotsButton = initialResults[0].getComponent<typeof VBtn>('[data-testid="message-box-dots"]');
+    await dotsButton.trigger('click');
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const deleteMenu = initialResults[0].getComponent<typeof VBtn>('[data-testid="message-box-delete"]');
+
+    await deleteMenu.trigger('click');
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const results = wrapper.findAllComponents(MessageBox);
+
+    expect(results).toHaveLength(14);
+    for (let i = 0; i < results.length; i++) {
+        expect(results[i].html()).toEqual(initialResults[i].html());
+    }
+
+    expect(logStore.items).toHaveLength(1);
+    expect(logStore.items[0].type).toBe("delete");
+    expect(logStore.items[0].message.message).toContain('Duis aliquet ultrices');
 });

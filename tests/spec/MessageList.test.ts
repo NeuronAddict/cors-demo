@@ -10,6 +10,8 @@ import {http, HttpResponse} from "msw";
 import {service} from "../../src/plugins/service";
 import {testServicePlugin} from "../plugins";
 import {store} from "../../src/plugins/store";
+import MessageBox from "../../src/components/messages/MessageBox.vue";
+import {VCheckbox} from "vuetify/components/VCheckbox";
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
@@ -63,3 +65,40 @@ test('List Messages When auth error', async () => {
 
 });
 
+test('Set Task done', async () => {
+
+    const axiosInstance = instanceProvider.newAxios();
+    axiosInstance.interceptors.request.use(async config => {
+        config.headers.Authorization = `Bearer FakeAccessToken`;
+        return config;
+    });
+
+    const wrapper = mount(MessageList, {
+        global: {
+            plugins: [vuetify, testServicePlugin(axiosInstance), store],
+        },
+    });
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const checkedItem = wrapper.getComponent(MessageBox);
+
+    expect(checkedItem.classes('greyed')).toBe(false);
+
+    const checkbox = checkedItem.getComponent<typeof VCheckbox>('[data-testid="message-box-checkbox"]');
+    await checkbox.setValue(true);
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    expect(checkedItem.classes('greyed')).toBe(true);
+
+    await checkbox.setValue(false);
+
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    expect(checkedItem.classes('greyed')).toBe(false);
+
+});

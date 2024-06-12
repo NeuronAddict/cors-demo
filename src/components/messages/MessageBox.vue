@@ -50,7 +50,7 @@ watch(messageDisabled, async (newValue, _) => {
                data-testid="message-box-item">
     <template v-slot:append>
       <v-list-item-action start>
-        <v-checkbox-btn data-testid="message-box-item-cb"
+        <v-checkbox-btn data-testid="message-box-checkbox"
                         true-icon="mdi-check"
                         base-color="secondary"
                         color="secondary"
@@ -61,12 +61,14 @@ watch(messageDisabled, async (newValue, _) => {
 
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn class="ma-3" color="surface" icon="mdi-dots-vertical" v-bind="props"></v-btn>
+            <v-btn class="ma-3" color="surface" icon="mdi-dots-vertical" v-bind="props"
+                   data-testid="message-box-dots"></v-btn>
           </template>
           <v-list>
             <v-list-item>
               <v-list-item-title>
-                <v-btn variant="text" class="on-surface" icon="mdi-delete" @click="deleteItem"></v-btn>
+                <v-btn variant="text" class="on-surface" icon="mdi-delete" @click="deleteItem"
+                       data-testid="message-box-delete"></v-btn>
               </v-list-item-title>
             </v-list-item>
           </v-list>

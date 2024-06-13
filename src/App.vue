@@ -1,29 +1,31 @@
 <template>
-  <v-theme-provider theme="custom">
-    <v-app>
 
-      <BaseLayout>
-        <template v-slot:app-bar>
-          <AppBar/>
-        </template>
-        <template v-slot:nav-drawer>
-          <v-list>
-            <v-list-item title="Navigation drawer"></v-list-item>
-            <v-list-item>
-              <RouterLink :to="{name: 'home'}">Home</RouterLink>
-            </v-list-item>
-          </v-list>
-        </template>
-        <template v-slot:footer>
-          <Footer/>
-        </template>
+  <v-app>
 
-        <RouterView/>
+    <BaseLayout>
 
-      </BaseLayout>
+      <template v-slot:app-bar>
+        <AppBar/>
+      </template>
 
-    </v-app>
-  </v-theme-provider>
+      <template v-slot:nav-drawer>
+        <v-list>
+          <v-list-item title="Navigation drawer"></v-list-item>
+          <v-list-item>
+            <RouterLink :to="{name: 'home'}">Home</RouterLink>
+          </v-list-item>
+        </v-list>
+      </template>
+
+      <template v-slot:footer>
+        <Footer/>
+      </template>
+
+      <RouterView/>
+
+    </BaseLayout>
+
+  </v-app>
 
 </template>
 

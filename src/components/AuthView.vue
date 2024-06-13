@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
 import auth from "@/core/auth";
+import MainSheet from "@/components/layout/MainSheet.vue";
 
 onMounted(async () => {
   try {
@@ -14,7 +15,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>Authenticating...</div>
+  <MainSheet>
+    <div>Authenticating...</div>
+  </MainSheet>
 </template>
 
 <style scoped>

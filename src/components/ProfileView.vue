@@ -2,6 +2,7 @@
 import {onMounted, type Ref, ref} from "vue";
 import Auth from "@/core/auth";
 import type {User} from "oidc-client-ts";
+import MainSheet from "@/components/layout/MainSheet.vue";
 
 const user: Ref<User | null> = ref(null);
 
@@ -13,8 +14,7 @@ onMounted(async () => {
 
 <template>
 
-  <v-sheet class="pa-3 ma-3">
-
+  <MainSheet>
     <p class="text-h5">Profile</p>
 
     <v-table class="ma-2">
@@ -36,7 +36,7 @@ onMounted(async () => {
       </tr>
       </tbody>
     </v-table>
-  </v-sheet>
+  </MainSheet>
 </template>
 
 <style scoped>

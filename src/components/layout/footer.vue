@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <v-footer class="d-flex">
+  <v-footer class="d-flex ma-3">
     <v-row justify="space-around" class="fill-width-custom">
       <v-col cols="8" md="8" sm="12" class="text-center text-error">
         Application volontairement vulnérable : Ne pas exposer/deployer en production
@@ -17,6 +17,10 @@
 </template>
 
 <style scoped>
+
+footer {
+  max-height: 75px;
+}
 
 .fill-width-custom {
   width: 100%;

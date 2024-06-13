@@ -15,7 +15,7 @@
         </v-navigation-drawer>
 
         <v-main>
-          <v-container class="pa-0">
+          <v-container class="pa-0 container">
 
             <RouterView></RouterView>
 
@@ -38,5 +38,15 @@ import AppBar from "@/components/layout/AppBar.vue";
 <style>
 a {
   font-weight: bold;
+}
+
+main {
+  min-height: 100vh;
+  flex-direction: column;
+  display: flex;
+}
+
+.container {
+  flex: 1;
 }
 </style>

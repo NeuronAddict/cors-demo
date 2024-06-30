@@ -8,7 +8,7 @@ import instanceProvider from "../../src/services/axios-config";
 import {server} from "../setup";
 import {http, HttpResponse} from "msw";
 import {service} from "../../src/plugins/service";
-import {testServicePlugin, testStorePlugin} from "../plugins";
+import {testServicePlugin, testStorePlugin, testUserManagerPlugin} from "../plugins";
 import {store} from "../../src/plugins/store";
 import MessageBox from "../../src/components/messages/MessageBox.vue";
 import {VCheckbox} from "vuetify/components/VCheckbox";
@@ -28,7 +28,7 @@ test('List Messages', async () => {
 
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify, testServicePlugin(axiosInstance), store],
+            plugins: [vuetify, testServicePlugin(axiosInstance), store, testUserManagerPlugin("alice")],
         },
     });
 
@@ -54,7 +54,7 @@ test('List Messages When auth error', async () => {
 
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify, service, store]
+            plugins: [vuetify, service, store, testUserManagerPlugin("alice")]
         }
     });
 
@@ -80,7 +80,11 @@ test('Set Task done', async () => {
 
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify, testServicePlugin(axiosInstance), testStorePlugin(messageStore, logStore)],
+            plugins: [vuetify,
+                testServicePlugin(axiosInstance),
+                testStorePlugin(messageStore, logStore),
+                testUserManagerPlugin("alice")
+            ],
         },
     });
 
@@ -128,7 +132,11 @@ test('Delete task', async () => {
 
     const wrapper = mount(MessageList, {
         global: {
-            plugins: [vuetify, testServicePlugin(axiosInstance), testStorePlugin(messageStore, logStore)],
+            plugins: [vuetify,
+                testServicePlugin(axiosInstance),
+                testStorePlugin(messageStore, logStore),
+                testUserManagerPlugin("alice")
+            ],
         },
     });
 

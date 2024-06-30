@@ -9,6 +9,8 @@ import {
     messageServiceProviderKey
 } from "../src/core/service-provider";
 import {logService, messageService} from "../src/services/service";
+import {userProviderKey} from "../src/core/auth";
+import {User, UserManager} from "oidc-client-ts";
 
 export const testStorePlugin = (messageStore: Store<Message>, logStore: Store<LogEntry> = null) => {
     return {
@@ -28,3 +30,15 @@ export const testServicePlugin = (axiosInstance: AxiosInstance) => {
         }
     }
 }
+
+export const testUserManagerPlugin = (user: string) => {
+    return {
+        install(app: App) {
+            app.provide(userProviderKey, {
+                getUser: () => {
+                    return Promise.resolve({profile: {given_name: user}} as User);
+                }
+            } as UserManager);
+        }
+    }
+};

@@ -180,6 +180,12 @@ export const restHandlers = [
             try {
                 const content = await request.json();
                 console.log(`receive a POST request: ${request.url} ${content}`);
+
+                if (content.author == null || content.author == "") {
+                    console.error("no user in request, error...", content);
+                    return HttpResponse.json(null, {status: 403});
+                }
+
                 const newMessage = {...content, id: messageData.nextId()} as Message;
                 messageData.currentMessages.push(newMessage);
                 console.log('post, return', newMessage);

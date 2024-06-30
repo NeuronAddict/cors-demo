@@ -48,7 +48,7 @@ let errorReason = ref("");
 
   <MessageSearch/>
 
-  <AddMessageForm author="anonymous"/>
+  <AddMessageForm/>
 
   <MessageBox v-for="message in reverseMessages" :message="message"/>
 

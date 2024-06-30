@@ -1,4 +1,5 @@
 import {Log, UserManager, WebStorageStateStore} from 'oidc-client-ts'
+import type {InjectionKey} from "vue";
 
 export const kc = {
     authorityUrl: import.meta.env.VITE_AUTHORITY_URL,
@@ -20,3 +21,6 @@ const Auth = new UserManager({
 Log.setLogger(console);
 
 export default Auth
+
+export const userProviderKey: InjectionKey<UserManager> = Symbol("userProvider");
+

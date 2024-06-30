@@ -4,7 +4,7 @@ import vuetify from "../../src/plugins/vuetify";
 import AddMessageForm from "../../src/components/messages/AddMessageForm.vue";
 import axiosConfig from "../../src/services/axios-config";
 import {logStoreProvider, messageStoreProvider,} from "../../src/core/store-provider";
-import {testServicePlugin, testStorePlugin} from "../plugins";
+import {testServicePlugin, testStorePlugin, testUserManagerPlugin} from "../plugins";
 
 
 global.ResizeObserver = require('resize-observer-polyfill')
@@ -22,7 +22,10 @@ test('Add message', async () => {
 
     const wrapper = mount(AddMessageForm, {
         global: {
-            plugins: [vuetify, testServicePlugin(axiosInstance), testStorePlugin(messageStore, logStore)],
+            plugins: [vuetify,
+                testServicePlugin(axiosInstance),
+                testStorePlugin(messageStore, logStore),
+                testUserManagerPlugin("alice")],
         },
         props: {
             author: 'anonymous'
@@ -55,5 +58,5 @@ test('Add message', async () => {
     expect(logStore.items).toHaveLength(1);
     expect(logStore.items[0].message.message).toEqual('First message');
     expect(logStore.items[0].type).toEqual('add');
-    expect(logStore.items[0].initiator).toEqual('anonymous');
+    expect(logStore.items[0].initiator).toEqual('alice');
 });

@@ -7,10 +7,7 @@ import type {CreateDTO, FormDTO} from "@/core/dto-types";
 import type LogEntry from "@/core/log-entry";
 import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
-
-const props = defineProps<{
-  author: string
-}>();
+import {userProviderKey} from "@/core/auth";
 
 const emit = defineEmits<{
   (e: 'addMessage', message: Message): Promise<Response>
@@ -22,7 +19,7 @@ const dateReg = /^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
 
 const message: Ref<FormDTO<Message>> = ref({
   message: null,
-  author: props.author,
+  author: null,
   dueDate: null
 });
 
@@ -32,6 +29,7 @@ const messageService = inject(messageServiceProviderKey)!;
 const logService = inject(logsServiceProviderKey)!;
 const messageStore = inject(messageStoreProviderKey)!;
 const logStore = inject(logStoreProviderKey)!;
+const userManager = inject(userProviderKey)!;
 
 async function addMessage(event: Event) {
   const valid = await form.value?.validate();
@@ -39,6 +37,15 @@ async function addMessage(event: Event) {
   if (!valid || !valid.valid) {
     event.preventDefault();
   } else {
+
+    const user = await userManager.getUser();
+    if (user == null) {
+      throw "User not found, are you connected ?";
+    }
+    if (user.profile.given_name == null) {
+      throw "User profile not found";
+    }
+    message.value.author = user.profile.given_name;
 
     await messageService.post(message.value as CreateDTO<Message>)
         .then(response => {
@@ -53,7 +60,7 @@ async function addMessage(event: Event) {
         .then(value => logService.post({
           message: value,
           type: "add",
-          initiator: 'anonymous'
+          initiator: user.profile.given_name
         } as CreateDTO<LogEntry>))
         .then(logEntryResponse => logStore.add(logEntryResponse.data))
         .then(() => form.value!.reset())

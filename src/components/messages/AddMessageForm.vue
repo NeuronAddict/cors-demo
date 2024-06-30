@@ -8,6 +8,7 @@ import type LogEntry from "@/core/log-entry";
 import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
 import {userProviderKey} from "@/core/auth";
+import parseId from "@/core/url-parser";
 
 const emit = defineEmits<{
   (e: 'addMessage', message: Message): Promise<Response>
@@ -51,7 +52,14 @@ async function addMessage(event: Event) {
         .then(response => {
           console.log('add message', response.data);
           emit('addMessage', response.data);
-          return response.data;
+          return response.headers;
+        })
+        .then(value => value["location"] as string)
+        .then(parseId)
+        .then(id => messageService.getItem(id))
+        .then(response => {
+          console.log("Got updated item: ", response.data);
+          return response.data
         })
         .then(value => {
           messageStore.add(value);
@@ -62,6 +70,10 @@ async function addMessage(event: Event) {
           type: "add",
           initiator: user.profile.given_name
         } as CreateDTO<LogEntry>))
+        .then(response => response.headers)
+        .then(headers => headers["location"] as string)
+        .then(parseId)
+        .then(id => logService.getItem(id))
         .then(logEntryResponse => logStore.add(logEntryResponse.data))
         .then(() => form.value!.reset())
         .catch(error => {

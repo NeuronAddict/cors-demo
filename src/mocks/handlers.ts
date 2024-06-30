@@ -173,7 +173,20 @@ export const restHandlers = [
         console.log('get, return', messageData.currentMessages);
         return HttpResponse.json(messageData.currentMessages);
     })),
+
+    http.get<{ id: string }, never, Message, '/api/v1/messages/:id'>('/api/v1/messages/:id', withAuth(({params}) => {
+        const {id} = params;
+        const numberId = parseInt(id as string);
+        return HttpResponse.json(messageData.currentMessages.find(value => value.id == numberId));
+    })),
+
     http.get<never, never, LogEntry[]>('/api/v1/logs', withAuth(() => HttpResponse.json(logsData.currentLogs))),
+
+    http.get<{ id: string }, never, LogEntry, '/api/v1/logs/:id'>('/api/v1/logs/:id', withAuth(({params}) => {
+        const {id} = params;
+        const numberId = parseInt(id as string);
+        return HttpResponse.json(logsData.currentLogs.find(value => value.id == numberId));
+    })),
 
     http.post<never, CreateDTO<Message>, Message>('/api/v1/messages',
         withAuth(async ({request}) => {
@@ -188,8 +201,12 @@ export const restHandlers = [
 
                 const newMessage = {...content, id: messageData.nextId()} as Message;
                 messageData.currentMessages.push(newMessage);
-                console.log('post, return', newMessage);
-                return HttpResponse.json(newMessage);
+                console.log(`post, return location to ${newMessage.id}`);
+                return HttpResponse.json(null, {
+                    status: 201, headers: {
+                        "Location": `/api/v1/messages/${newMessage.id}`
+                    }
+                });
             } catch (error) {
                 console.error(error);
                 return HttpResponse.json(null, {status: 500, statusText: 'Server Error'});
@@ -203,8 +220,12 @@ export const restHandlers = [
                 console.log(`receive a POST request: ${request.url} ${content}`);
                 const newLogEntry = {...content, id: logsData.nextId()} as LogEntry;
                 logsData.currentLogs.push(newLogEntry);
-                console.log('post, return', newLogEntry);
-                return HttpResponse.json(newLogEntry);
+                console.log(`post, return location to ${newLogEntry.id}`);
+                return HttpResponse.json(null, {
+                    status: 201, headers: {
+                        "Location": `/api/v1/messages/${newLogEntry.id}`
+                    }
+                });
             } catch (error) {
                 console.error(error);
                 return HttpResponse.json(null, {status: 500, statusText: 'Server Error'});

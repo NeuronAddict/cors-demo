@@ -8,7 +8,6 @@ import type LogEntry from "@/core/log-entry";
 import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
 import {userProviderKey} from "@/core/auth";
-import parseId from "@/core/url-parser";
 
 const emit = defineEmits<{
   (e: 'addMessage', message: Message): Promise<Response>
@@ -48,15 +47,12 @@ async function addMessage(event: Event) {
     }
     message.value.author = user.profile.given_name;
 
-    await messageService.post(message.value as CreateDTO<Message>)
+    await messageService.postAndGet(message.value as CreateDTO<Message>)
         .then(response => {
           console.log('add message', response.data);
           emit('addMessage', response.data);
-          return response.headers;
+          return response;
         })
-        .then(value => value["location"] as string)
-        .then(parseId)
-        .then(id => messageService.getItem(id))
         .then(response => {
           console.log("Got updated item: ", response.data);
           return response.data
@@ -65,15 +61,11 @@ async function addMessage(event: Event) {
           messageStore.add(value);
           return value;
         })
-        .then(value => logService.post({
+        .then(value => logService.postAndGet({
           message: value,
           type: "add",
           initiator: user.profile.given_name
         } as CreateDTO<LogEntry>))
-        .then(response => response.headers)
-        .then(headers => headers["location"] as string)
-        .then(parseId)
-        .then(id => logService.getItem(id))
         .then(logEntryResponse => logStore.add(logEntryResponse.data))
         .then(() => form.value!.reset())
         .catch(error => {

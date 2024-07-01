@@ -26,7 +26,7 @@ const userManager = inject(userProviderKey)!;
 function deleteItem() {
   messageService.delete(props.message)
       .then(_ => messageStore.delete(props.message))
-      .then(async _ => logService.post({
+      .then(async _ => logService.postAndGet({
         initiator: (await userManager.getUser())!.profile.given_name!,
         type: "delete",
         message: props.message

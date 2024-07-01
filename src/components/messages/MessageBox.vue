@@ -7,6 +7,7 @@ import type {CreateDTO} from "@/core/dto-types";
 import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
 import {userProviderKey} from "@/core/auth";
+import parseId from "@/core/url-parser";
 
 const props = defineProps<{
   message: Message;
@@ -42,7 +43,8 @@ watch(messageDisabled, async (newValue, _) => {
     type: newValue ? "done" : "undone",
     initiator: 'anonymous'
   }
-  await logService.post(logEntry).then(value => logStore.add(value.data));
+  await logService.post(logEntry).then(value => value.headers).then(value => value["location"])
+      .then(parseId).then(id => logService.getItem(id)).then(value => logStore.add(value.data));
 });
 
 </script>

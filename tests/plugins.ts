@@ -9,8 +9,7 @@ import {
     messageServiceProviderKey
 } from "../src/core/service-provider";
 import {logService, messageService} from "../src/services/service";
-import {userProviderKey} from "../src/core/auth";
-import {User, UserManager} from "oidc-client-ts";
+import {GenericUser, UserProvider, userProviderKey} from "../src/core/auth";
 
 export const testStorePlugin = (messageStore: Store<Message>, logStore: Store<LogEntry> = null) => {
     return {
@@ -36,9 +35,9 @@ export const testUserManagerPlugin = (user: string) => {
         install(app: App) {
             app.provide(userProviderKey, {
                 getUser: () => {
-                    return Promise.resolve({profile: {given_name: user}} as User);
+                    return Promise.resolve({username: user} as GenericUser);
                 }
-            } as UserManager);
+            } as UserProvider);
         }
     }
 };

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import Auth from "@/core/auth";
+// import Auth from "@/core/auth";
 </script>
 
 <template>
@@ -10,7 +10,7 @@ import Auth from "@/core/auth";
         <p class="text-h5 text-center">Unauthenticated</p>
         <hr/>
         <p class="ma-5 text-center">Please click
-          <v-btn @click="() => Auth.signinRedirect()">here</v-btn>
+          <!--          <v-btn @click="() => Auth.signinRedirect()">here</v-btn>-->
           for login
         </p>
 

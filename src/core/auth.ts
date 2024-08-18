@@ -13,6 +13,7 @@ const Auth = new UserManager({
     redirect_uri: `${window.location.origin}/auth`,
     silent_redirect_uri: `${window.location.origin}/silent-refresh`,
     post_logout_redirect_uri: `${window.location.origin}`,
+    revokeTokensOnSignout: true,
     response_type: 'code',
     userStore: new WebStorageStateStore(),
     loadUserInfo: true
@@ -20,7 +21,18 @@ const Auth = new UserManager({
 
 Log.setLogger(console);
 
-export default Auth
+// export default Auth
 
-export const userProviderKey: InjectionKey<UserManager> = Symbol("userProvider");
+export interface GenericUser {
+    username: string;
+}
 
+export interface UserProvider {
+    getUser: () => Promise<GenericUser | null>;
+}
+
+export const cookieUserProvider: UserProvider = {
+    getUser: () => Promise.resolve(null)
+}
+
+export const userProviderKey: InjectionKey<UserProvider> = Symbol("userProvider");

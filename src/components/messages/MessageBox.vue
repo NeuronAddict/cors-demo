@@ -21,13 +21,13 @@ const messageService = inject(messageServiceProviderKey)!;
 const logService = inject(logsServiceProviderKey)!;
 const messageStore = inject(messageStoreProviderKey)!;
 const logStore = inject(logStoreProviderKey)!;
-const userManager = inject(userProviderKey)!;
+const userProvider = inject(userProviderKey)!;
 
 function deleteItem() {
   messageService.delete(props.message)
       .then(_ => messageStore.delete(props.message))
       .then(async _ => logService.postAndGet({
-        initiator: (await userManager.getUser())!.profile.given_name!,
+        initiator: (await userProvider.getUser())!.username!,
         type: "delete",
         message: props.message
       }))

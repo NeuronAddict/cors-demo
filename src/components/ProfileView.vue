@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {onMounted, type Ref, ref} from "vue";
-import Auth from "@/core/auth";
+// import Auth from "@/core/auth";
 import type {User} from "oidc-client-ts";
 import MainSheet from "@/components/layout/MainSheet.vue";
 
 const user: Ref<User | null> = ref(null);
 
 onMounted(async () => {
-  user.value = await Auth.getUser();
+  // user.value = await Auth.getUser();
 });
 
 </script>

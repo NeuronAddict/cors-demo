@@ -6,8 +6,8 @@ import type LogEntry from "@/core/log-entry";
 import type {CreateDTO} from "@/core/dto-types";
 import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
-import {userProviderKey} from "@/core/auth";
 import parseId from "@/core/url-parser";
+import {userProviderKey} from "@/core/auth";
 
 const props = defineProps<{
   message: Message;

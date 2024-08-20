@@ -3,7 +3,6 @@ import type {Message} from "@/core/message";
 import type LogEntry from "@/core/log-entry";
 import {type AxiosInstance, type AxiosResponse,} from "axios";
 import parseId from "@/core/url-parser";
-import {user} from "@/plugins/user";
 
 
 export type Service<T> = {
@@ -43,7 +42,8 @@ function loginService_<T>(axiosInstance: AxiosInstance): LoginService<T> {
             return axiosInstance.post("j_security_check", formData, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
-                }
+                },
+                withCredentials: true
             })
         }
     }

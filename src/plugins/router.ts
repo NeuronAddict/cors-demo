@@ -50,7 +50,7 @@ export const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-    const userManager = inject(userProviderKey)!;
+    const userManager = inject(userProviderKey);
 
     const hasAuth = await userManager.getUser();
     if (to.matched.some((record) => record.meta.requiresAuth)) {

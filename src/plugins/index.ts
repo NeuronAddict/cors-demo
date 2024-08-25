@@ -17,7 +17,8 @@ import {user} from "@/plugins/user";
 export function registerPlugins (app: App) {
   app.use(vuetify);
   app.use(router);
+  app.use(user);
   app.use(service);
   app.use(store);
-  app.use(user);
+
 }

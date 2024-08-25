@@ -19,27 +19,32 @@ const routes: Readonly<RouteRecordRaw[]> = [
     {
         name: 'auth',
         path: '/auth',
-        component: AuthView
+        component: AuthView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'silentRefresh',
         path: '/silent-refresh',
-        component: SilentRefreshView
+        component: SilentRefreshView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'unauthenticated',
         path: '/unauthenticated',
-        component: UnauthView
+        component: UnauthView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'profile',
         path: '/profile',
-        component: ProfileView
+        component: ProfileView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'login',
         path: '/login',
-        component: LoginView
+        component: LoginView,
+        meta: {requiresAuth: true}
     }
 ]
 

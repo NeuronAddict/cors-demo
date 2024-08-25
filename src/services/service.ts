@@ -19,6 +19,13 @@ export type LoginService<T> = {
 }
 
 function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: string): Service<T> {
+    axiosInstance.interceptors.response.use(response => response,
+        error => {
+            if (error.response.status == 401) {
+                location.href = '/login';
+            }
+            return value;
+        });
     return {
         get: () => axiosInstance.get<T[]>(`/${path}`),
         getItem: (id: number) => axiosInstance.get<T>(`/${path}/${id}`),

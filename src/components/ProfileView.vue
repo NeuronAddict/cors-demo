@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import {onMounted, type Ref, ref} from "vue";
-// import Auth from "@/core/auth";
-import type {User} from "oidc-client-ts";
+import {inject, onMounted, type Ref, ref} from "vue";
 import MainSheet from "@/components/layout/MainSheet.vue";
+import type {Profile} from "@/core/profile";
+import {profileServiceProviderKey} from "@/core/service-provider";
 
-const user: Ref<User | null> = ref(null);
+const profile: Ref<Profile | null> = ref(null);
+
+const profileService = inject(profileServiceProviderKey);
 
 onMounted(async () => {
-  // user.value = await Auth.getUser();
+  profileService?.get().then(response => profile.value = response.data);
 });
 
 </script>
@@ -24,15 +26,15 @@ onMounted(async () => {
 
       <tr>
         <td>name:</td>
-        <td>{{ user?.profile.family_name }}</td>
-      </tr>
-      <tr>
-        <td>first name:</td>
-        <td>{{ user?.profile.given_name }}</td>
+        <td>{{ profile?.name }}</td>
       </tr>
       <tr>
         <td>email:</td>
-        <td>{{ user?.profile.email }}</td>
+        <td>{{ profile?.email }}</td>
+      </tr>
+      <tr>
+        <td>telephone:</td>
+        <td>{{ profile?.telephone }}</td>
       </tr>
       </tbody>
     </v-table>

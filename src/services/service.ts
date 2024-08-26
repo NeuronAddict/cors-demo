@@ -3,6 +3,7 @@ import type {Message} from "@/core/message";
 import type LogEntry from "@/core/log-entry";
 import {type AxiosInstance, type AxiosResponse,} from "axios";
 import parseId from "@/core/url-parser";
+import type {Profile} from "@/core/profile";
 
 
 export type Service<T> = {
@@ -16,6 +17,10 @@ export type Service<T> = {
 
 export type LoginService<T> = {
     post: (username: string, password: string) => Promise<AxiosResponse<T>>;
+}
+
+export type SimpleGetService<T> = {
+    get: () => Promise<AxiosResponse<T>>;
 }
 
 function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: string): Service<T> {
@@ -56,6 +61,14 @@ function loginService_<T>(axiosInstance: AxiosInstance): LoginService<T> {
     }
 }
 
+function profileService_(axiosInstance: AxiosInstance): SimpleGetService<Profile> {
+    return {
+        get: () => axiosInstance.get<Profile>('/profile')
+    }
+}
+
+
 export const messageService = (axiosInstance: AxiosInstance) => service<Message>(axiosInstance, 'messages');
 export const logService = (axiosInstance: AxiosInstance) => service<LogEntry>(axiosInstance, 'logs');
+export const profileService = (axiosInstance: AxiosInstance) => profileService_(axiosInstance);
 export const loginService = (axiosInstance: AxiosInstance) => loginService_(axiosInstance);

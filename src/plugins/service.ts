@@ -4,9 +4,10 @@ import {
     axiosInstanceProviderKey,
     loginServiceProviderKey,
     logsServiceProviderKey,
-    messageServiceProviderKey
+    messageServiceProviderKey,
+    profileServiceProviderKey
 } from "@/core/service-provider";
-import {loginService, logService, messageService} from "@/services/service";
+import {loginService, logService, messageService, profileService} from "@/services/service";
 import {type UserProvider, userProviderKey} from "@/core/auth";
 
 export const service = {
@@ -16,6 +17,7 @@ export const service = {
         app.provide(axiosInstanceProviderKey, axiosInstance);
         app.provide(messageServiceProviderKey, messageService(axiosInstance));
         app.provide(logsServiceProviderKey, logService(axiosInstance));
-        app.provide(loginServiceProviderKey, loginService(axiosInstance))
+        app.provide(loginServiceProviderKey, loginService(axiosInstance));
+        app.provide(profileServiceProviderKey, profileService(axiosInstance));
     }
 };

@@ -21,10 +21,10 @@ export type LoginService<T> = {
 function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: string): Service<T> {
     axiosInstance.interceptors.response.use(response => response,
         error => {
-            if (error.response.status == 401) {
+            if (error.response && (error.response.status == 401 || error.response.status == 403)) {
                 location.href = '/login';
             }
-            return value;
+            return Promise.reject(error);
         });
     return {
         get: () => axiosInstance.get<T[]>(`/${path}`),

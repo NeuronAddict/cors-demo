@@ -1,15 +1,37 @@
 <script setup lang="ts">
 
-import {onMounted, ref, type Ref} from "vue";
+import {inject, onMounted, ref, type Ref} from "vue";
 // import Auth from "@/core/auth";
-import type {User} from "oidc-client-ts";
+import {OidcAuth} from "@/core/oidc-auth";
+import {AuthType, type GenericUser, userProviderKey} from "@/core/auth";
 
-let user: Ref<User | null> = ref(null);
+
+const userManager = inject(userProviderKey)!;
+let user: Ref<GenericUser | null> = ref(null);
 
 onMounted(async () => {
-  // user.value = await Auth.getUser();
+  user.value = await userManager.getUser();
   console.log("Logged with user", user.value);
 });
+
+function login() {
+  if(userManager.authType === AuthType.Cookie) {
+    location.href = '/login';
+  }
+  else {
+    OidcAuth.signinRedirect()
+  }
+}
+
+function logout() {
+
+  if(userManager.authType === AuthType.Cookie) {
+    location.href = '/logout';
+  }
+  else {
+    OidcAuth.signoutRedirect();
+  }
+}
 
 </script>
 
@@ -23,7 +45,7 @@ onMounted(async () => {
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
-    <p v-if="user" v-html="`Hello ${user.profile.given_name}`"></p>
+    <p v-if="user" v-html="`Hello ${user.username}`"></p>
     <v-menu v-if="user">
       <template v-slot:activator="{ props }">
         <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
@@ -31,10 +53,10 @@ onMounted(async () => {
       <v-btn color="surface">
         <RouterLink :to="{ name: 'profile'}">Profile</RouterLink>
       </v-btn>
-      <!--      <v-btn color="surface" @click="() => Auth.signoutRedirect()">Logout</v-btn>-->
+            <v-btn color="surface" @click="() => logout()">Logout</v-btn>
     </v-menu>
 
-    <!--    <v-btn v-if="!user" @click="() => Auth.signinRedirect()">Login</v-btn>-->
+        <v-btn v-if="!user" @click="() => login()">Login</v-btn>
 
   </v-app-bar>
 </template>

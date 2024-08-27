@@ -1,13 +1,14 @@
-import {type App} from "vue";
-import {cookieUserProvider} from "@/core/cookie-auth";
+import type {App} from "vue";
 import {userProviderKey} from "@/core/auth";
+import {cookieUserProvider} from "@/core/cookie-auth";
 import {oidcUserProvider} from "@/core/oidc-auth";
 
-export const user = {
+export const authConfig = {
     install(app: App) {
-        if (import.meta.env.VITE_COOKIE_AUTH === 'true') {
+        if( import.meta.env.VITECOOKIE_AUTH == "true" ) {
             app.provide(userProviderKey, cookieUserProvider);
-        } else {
+        }
+        else {
             app.provide(userProviderKey, oidcUserProvider);
         }
     }

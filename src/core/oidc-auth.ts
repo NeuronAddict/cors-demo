@@ -1,5 +1,6 @@
 import {Log, UserManager, WebStorageStateStore} from 'oidc-client-ts'
 import type {GenericUser, UserProvider} from "@/core/auth";
+import {AuthType} from "@/core/auth";
 
 export const kc = {
     authorityUrl: import.meta.env.VITE_AUTHORITY_URL,
@@ -22,5 +23,6 @@ export const OidcAuth = new UserManager({
 Log.setLogger(console);
 
 export const oidcUserProvider: UserProvider = {
-    getUser: () => OidcAuth.getUser().then(value => ({username: value?.profile.given_name} as GenericUser))
+    getUser: () => OidcAuth.getUser().then(value => ({username: value?.profile.given_name} as GenericUser)),
+    authType: AuthType.OIDC
 }

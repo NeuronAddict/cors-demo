@@ -5,7 +5,7 @@ interface MenuItem {
   display: string
 }
 
-const menuItems: {}[] = [
+const menuItems: MenuItem[] = [
   {
     name: "home",
     display: "Home",

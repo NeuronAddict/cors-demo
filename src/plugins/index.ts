@@ -15,9 +15,9 @@ import {store} from "@/plugins/store";
 import {authConfig} from "@/plugins/auth";
 
 export function registerPlugins (app: App) {
+  app.use(authConfig);
   app.use(vuetify);
   app.use(router);
   app.use(service);
   app.use(store);
-  app.use(authConfig);
 }

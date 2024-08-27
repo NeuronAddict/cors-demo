@@ -5,11 +5,9 @@ import {oidcUserProvider} from "@/core/oidc-auth";
 
 export const authConfig = {
     install(app: App) {
-        if( import.meta.env.VITECOOKIE_AUTH == "true" ) {
-            app.provide(userProviderKey, cookieUserProvider);
-        }
-        else {
-            app.provide(userProviderKey, oidcUserProvider);
-        }
+        const userProvider = import.meta.env.VITE_COOKIE_AUTH === "true" ? cookieUserProvider : oidcUserProvider;
+        app.provide(userProviderKey, userProvider);
+        // Save to global properties for access by other plugins
+        app.config.globalProperties.$userProvider = userProvider;
     }
 };

@@ -8,11 +8,15 @@ import {
     profileServiceProviderKey
 } from "@/core/service-provider";
 import {loginService, logService, messageService, profileService} from "@/services/service";
-import {type UserProvider, userProviderKey} from "@/core/auth";
+import {type UserProvider} from "@/core/auth";
 
 export const service = {
     install(app: App) {
-        const userProvider: UserProvider = app.config.globalProperties[userProviderKey];
+        const userProvider: UserProvider = app.config.globalProperties.$userProvider;
+        if (!userProvider) {
+            console.error("injectedValue is not provided!");
+            return;
+        }
         const axiosInstance = config.newAxios((import.meta.env.VITE_COOKIE_AUTH === "true"), userProvider);
         app.provide(axiosInstanceProviderKey, axiosInstance);
         app.provide(messageServiceProviderKey, messageService(axiosInstance));

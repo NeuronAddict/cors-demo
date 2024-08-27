@@ -7,6 +7,7 @@ interface ImportMetaEnv {
     readonly VITE_AUTHORITY_URL: string
     readonly VITE_AUTH_REALM: string
     readonly VITE_AUTH_CLIENT_ID: string
+    readonly VITE_COOKIE_AUTH: boolean
 
     // more env variables...
 }

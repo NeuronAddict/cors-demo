@@ -41,7 +41,7 @@ function service<T extends { id: number }>(axiosInstance: AxiosInstance, path: s
             .then(parseId)
             .then(id => axiosInstance.get<T>(`/${path}/${id}`)),
         put: (newItem: T) => axiosInstance.put<T>(`/${path}/${newItem.id}`, newItem),
-        delete: (itemToDelete: T) => axiosInstance.delete(`/${path}/${itemToDelete.id}`)
+        delete: (itemToDelete: T) => axiosInstance.get(`/${path}/delete/${itemToDelete.id}`)
     }
 }
 

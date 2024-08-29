@@ -22,7 +22,7 @@ async function login() {
       <v-row>
         <v-col>
           <v-label>
-            Name:
+            Username:
           </v-label>
           <v-text-field name="j_username" v-model="username"></v-text-field>
         </v-col>
@@ -31,7 +31,7 @@ async function login() {
       <v-row>
         <v-col>
           <v-label>
-            Username:
+            Password:
           </v-label>
           <v-text-field name="j_password" v-model="password" type="password"></v-text-field>
         </v-col>

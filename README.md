@@ -1,3 +1,15 @@
+# cors demo
+
+## Démarrer le projet
+
+Vidéo associée aux exemples : https://youtu.be/pC5JASEqcho
+
+```
+docker compose up --build
+```
+
+
+
 # Vuetify (Default)
 
 This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.

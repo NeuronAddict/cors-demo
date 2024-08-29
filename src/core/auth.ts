@@ -1,26 +1,22 @@
-import {Log, UserManager, WebStorageStateStore} from 'oidc-client-ts'
 import type {InjectionKey} from "vue";
 
-export const kc = {
-    authorityUrl: import.meta.env.VITE_AUTHORITY_URL,
-    realm: import.meta.env.VITE_AUTH_REALM,
-    clientId: import.meta.env.VITE_AUTH_CLIENT_ID,
+
+export interface GenericUser {
+    username: string;
 }
 
-const Auth = new UserManager({
-    authority: `${kc.authorityUrl}/realms/${kc.realm}`,
-    client_id: kc.clientId,
-    redirect_uri: `${window.location.origin}/auth`,
-    silent_redirect_uri: `${window.location.origin}/silent-refresh`,
-    post_logout_redirect_uri: `${window.location.origin}`,
-    response_type: 'code',
-    userStore: new WebStorageStateStore(),
-    loadUserInfo: true
-});
+export enum AuthType {
+    Cookie,
+    OIDC
+}
 
-Log.setLogger(console);
+export interface UserProvider {
+    getUser: () => Promise<GenericUser | null>;
+    authType: AuthType;
+}
 
-export default Auth
+export const userProviderKey: InjectionKey<UserProvider> = Symbol("userProvider");
 
-export const userProviderKey: InjectionKey<UserManager> = Symbol("userProvider");
+
+
 

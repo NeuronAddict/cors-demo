@@ -6,8 +6,8 @@ import type LogEntry from "@/core/log-entry";
 import type {CreateDTO} from "@/core/dto-types";
 import {logsServiceProviderKey, messageServiceProviderKey} from "@/core/service-provider";
 import {logStoreProviderKey, messageStoreProviderKey} from "@/core/store-provider";
-import {userProviderKey} from "@/core/auth";
 import parseId from "@/core/url-parser";
+import {userProviderKey} from "@/core/auth";
 
 const props = defineProps<{
   message: Message;
@@ -21,13 +21,13 @@ const messageService = inject(messageServiceProviderKey)!;
 const logService = inject(logsServiceProviderKey)!;
 const messageStore = inject(messageStoreProviderKey)!;
 const logStore = inject(logStoreProviderKey)!;
-const userManager = inject(userProviderKey)!;
+const userProvider = inject(userProviderKey)!;
 
 function deleteItem() {
   messageService.delete(props.message)
       .then(_ => messageStore.delete(props.message))
       .then(async _ => logService.postAndGet({
-        initiator: (await userManager.getUser())!.profile.given_name!,
+        initiator: (await userProvider.getUser())!.username!,
         type: "delete",
         message: props.message
       }))

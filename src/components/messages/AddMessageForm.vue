@@ -42,10 +42,10 @@ async function addMessage(event: Event) {
     if (user == null) {
       throw "User not found, are you connected ?";
     }
-    if (user.profile.given_name == null) {
+    if (user.username == null) {
       throw "User profile not found";
     }
-    message.value.author = user.profile.given_name;
+    message.value.author = user.username;
 
     await messageService.postAndGet(message.value as CreateDTO<Message>)
         .then(response => {
@@ -64,7 +64,7 @@ async function addMessage(event: Event) {
         .then(value => logService.postAndGet({
           message: value,
           type: "add",
-          initiator: user.profile.given_name
+          initiator: user.username
         } as CreateDTO<LogEntry>))
         .then(logEntryResponse => logStore.add(logEntryResponse.data))
         .then(() => form.value!.reset())

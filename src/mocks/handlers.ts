@@ -160,9 +160,9 @@ function withAuth<Params extends PathParams,
     RequestBodyType extends DefaultBodyType,
     ResponseBodyType extends DefaultBodyType>(resolver: HttpResponseResolver<Params, RequestBodyType, ResponseBodyType>): HttpResponseResolver<Params, RequestBodyType, ResponseBodyType> {
     return info => {
-        if (!info.request.headers.get('Authorization')) {
-            return HttpResponse.json(null, {status: 403, statusText: 'Unauthorized'});
-        }
+        // if (!info.request.headers.get('Authorization')) {
+        //     return HttpResponse.json(null, {status: 403, statusText: 'Unauthorized'});
+        // }
 
         return resolver(info);
     }

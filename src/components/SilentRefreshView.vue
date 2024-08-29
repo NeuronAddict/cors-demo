@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
-import auth from "@/core/auth";
+// import auth from "@/core/auth";
 
 onMounted(async () => {
-  await auth.signinSilent();
+  // await auth.signinSilent();
 });
 
 </script>

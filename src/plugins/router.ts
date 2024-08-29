@@ -3,8 +3,10 @@ import MessagesView from "@/components/MessagesView.vue";
 import AuthView from "@/components/AuthView.vue";
 import SilentRefreshView from "@/components/SilentRefreshView.vue";
 import UnauthView from "@/components/UnauthView.vue";
-import Auth from "@/core/auth";
 import ProfileView from "@/components/ProfileView.vue";
+import {inject} from "vue";
+import LoginView from "@/components/LoginView.vue";
+import {userProviderKey} from "@/core/auth";
 
 
 const routes: Readonly<RouteRecordRaw[]> = [
@@ -17,23 +19,33 @@ const routes: Readonly<RouteRecordRaw[]> = [
     {
         name: 'auth',
         path: '/auth',
-        component: AuthView
+        component: AuthView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'silentRefresh',
         path: '/silent-refresh',
-        component: SilentRefreshView
+        component: SilentRefreshView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'unauthenticated',
         path: '/unauthenticated',
-        component: UnauthView
+        component: UnauthView,
+        meta: {requiresAuth: true}
     },
     {
         name: 'profile',
         path: '/profile',
-        component: ProfileView
+        component: ProfileView,
+        meta: {requiresAuth: true}
     },
+    {
+        name: 'login',
+        path: '/login',
+        component: LoginView,
+        meta: {requiresAuth: true}
+    }
 ]
 
 export const router = createRouter({
@@ -42,11 +54,14 @@ export const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const hasAuth = await Auth.getUser();
+
+    const userManager = inject(userProviderKey)!;
+
+    const hasAuth = await userManager.getUser();
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (!hasAuth) {
             return next({
-                path: '/unauthenticated'
+                path: '/login'
             })
         }
     }

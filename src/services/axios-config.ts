@@ -1,16 +1,22 @@
 import axios from "axios";
-import Auth from "@/core/auth";
+import {AuthType, type UserProvider} from "@/core/auth";
+import {OidcAuth} from "@/core/oidc-auth";
 
-const axiosInstanceProvider = () => {
+const axiosInstanceProvider = (sendCookie: boolean, userProvider: UserProvider) => {
+
     const instance = axios.create({
         baseURL: import.meta.env.VITE_BASE_URL,
+        withCredentials: sendCookie
     });
 
-    instance.interceptors.request.use(async config => {
-        const user = await Auth.getUser();
-        if (user != null) config.headers.Authorization = `Bearer ${user.access_token}`;
-        return config;
-    });
+    if(userProvider.authType === AuthType.OIDC) {
+
+        instance.interceptors.request.use(async config => {
+            const user = await OidcAuth.getUser();
+            if (user != null) config.headers.Authorization = `Bearer ${user.access_token}`;
+            return config;
+        });
+    }
 
     return instance;
 }
